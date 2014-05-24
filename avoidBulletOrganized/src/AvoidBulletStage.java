@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
-//a little change
+
 public class AvoidBulletStage extends Stage{
 	char rank='F';
 	double hitpoint=10.0;
@@ -64,7 +64,7 @@ public class AvoidBulletStage extends Stage{
 	void BulletProcess_LV1() {
 		Random rand=new Random();
 		
-		// ÃÑ¾Ë
+		// ï¿½Ñ¾ï¿½
 		if (count%40==0) {
 			double num=rand.nextDouble();
 			for (int i=-15; i<=15; i++)
@@ -143,8 +143,8 @@ public class AvoidBulletStage extends Stage{
 	}
 	public void Draw_Status() {
 		buffg.setFont(new Font("Default", Font.BOLD, 20));
-		// ÆùÆ®¼³Á¤À»ÇÕ´Ï´Ù. ±âº»ÆùÆ®, ±½°Ô, »çÀÌÁî20
-		buffg.drawString("TIME : " + count/50, f_xpos+300, f_ypos+450); // ÅØ½ºÆ®, xÁÂÇ¥, yÁÂÇ¥
+		// ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. ï¿½âº»ï¿½ï¿½Æ®, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½20
+		buffg.drawString("TIME : " + count/50, f_xpos+300, f_ypos+450); // ï¿½Ø½ï¿½Æ®, xï¿½ï¿½Ç¥, yï¿½ï¿½Ç¥
 		buffg.drawString("HIT : " + hitpoint, f_xpos+300, f_ypos+480);
 	}
 	public void Draw_Explosion() {
