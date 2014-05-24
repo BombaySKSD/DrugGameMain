@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
-
+//a little change
 public class AvoidBulletStage extends Stage{
 	char rank='F';
 	double hitpoint=10.0;
