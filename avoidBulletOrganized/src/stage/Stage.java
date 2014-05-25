@@ -1,3 +1,5 @@
+package stage;
+
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -5,41 +7,46 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import object.Pattern;
+
+import main.Play;
+
 abstract public class Stage{
 	public final static int EASY=0;
 	public final static int MODERATE=1;
 	public final static int HARD=2;
 	
-	protected int count=0;
-	protected boolean keyUp = false;
-	protected boolean keyDown = false;
-	protected boolean keyLeft = false;
-	protected boolean keyRight = false;
-	protected boolean keySpace = false;
+	public boolean keyUp = false;
+	public boolean keyDown = false;
+	public boolean keyLeft = false;
+	public boolean keyRight = false;
+	public boolean keySpace = false;
 	
-	protected int f_width;
-	protected int f_height;
-	protected int f_xpos;
-	protected int f_ypos;
-	protected int difficulty;
-	protected int fps;
+	public int f_width;
+	public int f_height;
+	public int f_xpos;
+	public int f_ypos;
+	public int difficulty;
+	public int fps;
 	
-	int player_x;
-	int player_y;
-	double gauge;
-	boolean stageFailed=false;
-	int span;
+	public int player_x;
+	public int player_y;
+	public double gauge;
+	public int span;
 	
-	Play play;
-	Stage stage;
-	Graphics buffg;
-	ArrayList<Pattern> patternList=new ArrayList<Pattern>();
+	public int count=0;
+	public boolean stageFailed=false;
+	public Graphics buffg;
 	
-	Image player_img;
-	Image background_img;
+	public Play play;
 	
-	Stage(){}
-	Stage(Play play,int difficulty){
+	public Image player_img;
+	public Image background_img;
+	
+	private ArrayList<Pattern> patternList=new ArrayList<Pattern>();
+	
+	public Stage(){}
+	public Stage(Play play,int difficulty){
 		setPlay(play);
 		setDifficulty(difficulty);
 	}

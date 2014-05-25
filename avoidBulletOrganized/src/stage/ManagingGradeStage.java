@@ -1,6 +1,11 @@
+package stage;
+
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+
+import object.Bullet;
+import object.Pattern;
 
 
 public class ManagingGradeStage extends Stage {
@@ -119,13 +124,14 @@ public class ManagingGradeStage extends Stage {
 }
 
 class GradePattern extends Pattern{
-	Image explosion;
+	Image explosion,image;
 	int startTime;
 	double damage,gaugeDamage;
 	int frequency=200;
 	
 	public GradePattern(Image image,Image explosion, Stage stage,int startTime,double damage,double gaugeDamage){
 		super(image,stage);
+		this.image=image;
 		this.explosion=explosion;
 		this.startTime=startTime;
 		this.damage=damage;
@@ -135,14 +141,14 @@ class GradePattern extends Pattern{
 	public Bullet create() {
 		double num=rand.nextDouble();
 		int pos=rand.nextInt(stage.f_width);
-		return new Bullet(pos, 0, (Math.PI/2.0)*(num-0.5), frequency/stage.fps);
+		return new Bullet(pos, 0, (Math.PI/2.0)*(num-0.5), frequency/stage.fps,image);
 	}
 	public boolean createWhen(){
 		return stage.count%(10*stage.fps/frequency+10)==0 && stage.second()>=startTime;
 	}
 	public boolean removeWhen(Bullet bl){
 		return bl.inRange(stage.player_x, stage.player_y, stage.player_img, image)
-				|| (bl.x < 0 || bl.x > stage.f_width || bl.y > stage.f_height-80)
+				|| bl.inScreen(stage)
 				|| stage.second()>17;
 	}
 	public void whenCrash(){

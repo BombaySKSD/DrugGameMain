@@ -1,10 +1,15 @@
+/*package stage;
+
 import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
-//a little change
+
+import object.Bullet;
+
+import main.Play;
+
 public class AvoidBulletStage extends Stage{
 	char rank='F';
 	double hitpoint=10.0;
@@ -173,3 +178,4 @@ public class AvoidBulletStage extends Stage{
 		buffg.drawString("RANK : " + rank, f_xpos+300, f_ypos+510);
 	}
 }
+*/

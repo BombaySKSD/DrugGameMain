@@ -1,7 +1,12 @@
+package object;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
+
+import stage.Stage;
+
+import main.Play;
 
 abstract public class Pattern{
 	private ArrayList<Bullet> list=new ArrayList<Bullet>();
@@ -33,7 +38,7 @@ abstract public class Pattern{
 	final public boolean inRange(Bullet bl){
 		return bl.inRange(stage.player_x, stage.player_y, stage.player_img, image);
 	}
-	final void update(){
+	final public void update(){
 		if(createWhen()){
 			list.add(create());
 		}
