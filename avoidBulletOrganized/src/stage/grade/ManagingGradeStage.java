@@ -41,8 +41,8 @@ public class ManagingGradeStage extends Stage {
 		f=new ImageIcon("FFF.gif").getImage();
 		explosion_img = new ImageIcon("explosion.gif").getImage();
 		background_img = new ImageIcon("background1.png").getImage();
-		success=new ImageIcon("success.bmp").getImage();
-		fail=new ImageIcon("fail.bmp").getImage();
+		success=new ImageIcon("success.gif").getImage();
+		fail=new ImageIcon("fail.gif").getImage();
 		
 		player=new Player(f_width/2,f_height-100,0,0,player_img,ManagingGradeStage.this);
 		
@@ -57,7 +57,7 @@ public class ManagingGradeStage extends Stage {
 			public void whenCrash() {}
 			@Override
 			public boolean removeWhen(Bullet bl) {
-				return second()>17;
+				return second()>=17;
 			}
 			@Override
 			public boolean inRange(Bullet bl) {
@@ -97,6 +97,7 @@ public class ManagingGradeStage extends Stage {
 		});
 		
 		addPattern(new Pattern() {
+			private boolean evaluated=false;
 			@Override
 			public void whenCrash() {}
 			@Override
@@ -109,15 +110,23 @@ public class ManagingGradeStage extends Stage {
 			}
 			@Override
 			public boolean createWhen() {
-				return second()>=10;
+				return second()>=17;
 			}
 			@Override
 			public Bullet create() {
 				Image image;
 				if(ManagingGradeStage.this.grade>=3.3){
-					image=success;
+						image=success;
+					if(!evaluated){
+						evaluated=true;
+					}
+					gauge+=15;
 				}else{
-					image=fail;
+						image=fail;
+					if(!evaluated){
+						evaluated=true;
+					}
+					gauge-=(3.3-grade)*penalty*10;
 				}
 				return new GradeEval(f_width/3, f_height/3,0,0, image);
 			}
