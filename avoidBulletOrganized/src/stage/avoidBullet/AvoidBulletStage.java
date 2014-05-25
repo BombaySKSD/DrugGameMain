@@ -1,4 +1,5 @@
-/*package stage;
+/*package stage.avoidBullet;
+package stage;
 
 import java.awt.Font;
 import java.awt.Image;

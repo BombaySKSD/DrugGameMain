@@ -1,14 +1,14 @@
 package object;
 
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import main.Play;
-import stage.grade.Player;
 
 abstract public class Stage{
 	public final static int EASY=0;
@@ -21,25 +21,15 @@ abstract public class Stage{
 	public boolean keyRight = false;
 	public boolean keySpace = false;
 	
-	public int f_width;
-	public int f_height;
-	public int f_xpos;
-	public int f_ypos;
 	public int difficulty;
 	public int fps;
-	
-	public Player player;
 	public double gauge;
 	public int span;
-	
 	public int count=0;
 	public boolean stageFailed=false;
-	public Graphics buffg;
 	
-	public Play play;
-	
-	public Image background_img;
-	
+	private Graphics buffg;
+	private Play play;
 	private long initialTime;
 	private ArrayList<Pattern> patternList=new ArrayList<Pattern>();
 	
@@ -49,31 +39,28 @@ abstract public class Stage{
 		setDifficulty(difficulty);
 	}
 	
+	final public void setDifficulty(int difficulty){
+		this.difficulty=difficulty;
+	}
+	final public void setBuffer(Graphics buffg){
+		this.buffg=buffg;
+	}
 	final public void setPlay(Play play){
 		this.play=play;
-		f_width=play.f_width;
-		f_height=play.f_height;
-		f_xpos=play.f_xpos;
-		f_ypos=play.f_ypos;
 		fps=play.fps;
 		gauge=play.gauge;
 		initialTime=System.currentTimeMillis();
 	}
-	final public void setDifficulty(int difficulty){
-		this.difficulty=difficulty;
+	
+	final public int getWidth(){
+		return play.f_width;
+	}
+	final public int getHeight(){
+		return play.f_height;
 	}
 	
 	final public void addPattern(Pattern pattern){
 		patternList.add(pattern);
-	}
-	final public void addPattern(Pattern pattern,int index){
-		patternList.add(index, pattern);
-	}
-	final public void addPatterns(Pattern[] patternArray){
-		patternList.addAll(Arrays.asList(patternArray));
-	}
-	final public void addPatterns(List<Pattern> patternList){
-		this.patternList.addAll(patternList);
 	}
 	final public void updateAllPatterns(){
 		for(Pattern pattern:patternList){
@@ -84,8 +71,21 @@ abstract public class Stage{
 		for(Pattern pattern:patternList)
 			pattern.draw(buffg,play);
 	}
+	final public void drawImage(Image image,int x,int y){
+		buffg.drawImage(image, x, y, play);
+	}
+	final public void drawString(String str,int x,int y){
+		buffg.drawString(str, x, y);
+	}
+	final public void setFont(Font font){
+		buffg.setFont(font);
+	}
+	
 	final public int second(){
 		return (int)(System.currentTimeMillis()-initialTime)/1000+1;
+	}
+	final public Image getImage(String filepath){
+		return new ImageIcon(filepath).getImage();
 	}
 	
 	abstract public void init();//Stage √ ±‚»≠

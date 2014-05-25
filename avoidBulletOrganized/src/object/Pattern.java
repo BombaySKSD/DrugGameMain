@@ -1,36 +1,26 @@
 package object;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Random;
-
 
 import main.Play;
 
 abstract public class Pattern{
-	private ArrayList<Bullet> list=new ArrayList<Bullet>();
-	protected Random rand=new Random();
-	protected Stage stage;
+	private ArrayList<SingleObject> list=new ArrayList<SingleObject>();
 	
-	public Pattern(){}
-	public Pattern(ArrayList<Bullet> list,Image image){
-		this.list=list;
-	}
-	final public void setStage(Stage stage){
-		this.stage=stage;
-	}
-	final public void draw(Graphics buffg,Play play){
+	protected Pattern(){}
+	
+	final protected void draw(Graphics buffg,Play play){
 		for(int i=0;i<list.size();i++){
-			Bullet bl=list.get(i);
+			SingleObject bl=list.get(i);
 			buffg.drawImage(bl.image, (int)bl.x, (int)bl.y, play);
 		}
 	}
-	final public void update(){
+	final protected void update(){
 		if(createWhen()){
 			list.add(create());
 		}
 		for(int i=0;i<list.size();i++){
-			Bullet bl=list.get(i);
+			SingleObject bl=list.get(i);
 			if(inRange(bl)){
 				whenCrash();
 			}
@@ -40,16 +30,16 @@ abstract public class Pattern{
 			}
 		}
 		for(int i=0;i<list.size();i++){
-			Bullet bl=list.get(i);
+			SingleObject bl=list.get(i);
 			bl.move();
 		}
 	}
 	
-	abstract public Bullet create();
+	abstract public SingleObject create();
 	abstract public boolean createWhen();
-	abstract public boolean removeWhen(Bullet bl);
+	abstract public boolean removeWhen(SingleObject bl);
 	abstract public void whenCrash();
-	abstract public boolean inRange(Bullet bl);
+	abstract public boolean inRange(SingleObject bl);
 }
 
 
