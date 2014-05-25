@@ -1,4 +1,4 @@
-package stage;
+package object;
 
 
 import java.awt.Graphics;
@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import main.Play;
-import object.Pattern;
 import stage.grade.Player;
 
 abstract public class Stage{
@@ -39,7 +38,6 @@ abstract public class Stage{
 	
 	public Play play;
 	
-	public Image player_img;
 	public Image background_img;
 	
 	private long initialTime;
@@ -79,7 +77,7 @@ abstract public class Stage{
 			pattern.update();
 		}
 	}
-	final public void drawAllPattern(){
+	final public void drawAllPatterns(){
 		for(Pattern pattern:patternList)
 			pattern.draw(buffg,play);
 	}

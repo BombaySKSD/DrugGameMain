@@ -4,27 +4,17 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
 
-import stage.Stage;
 
 import main.Play;
 
 abstract public class Pattern{
 	private ArrayList<Bullet> list=new ArrayList<Bullet>();
-	protected Image image;
 	protected Random rand=new Random();
 	protected Stage stage;
 	
 	public Pattern(){}
 	public Pattern(ArrayList<Bullet> list,Image image){
 		this.list=list;
-	}
-	public Pattern(Image image,Stage stage){
-		this.image=image;
-		this.stage=stage;
-	}
-	
-	final public void setImage(Image image){
-		this.image=image;
 	}
 	final public void setStage(Stage stage){
 		this.stage=stage;
