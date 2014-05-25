@@ -57,7 +57,7 @@ public class ManagingGradeStage extends Stage {
 			public void whenCrash() {}
 			@Override
 			public boolean removeWhen(Bullet bl) {
-				return second()>=17;
+				return second()>17;
 			}
 			@Override
 			public boolean inRange(Bullet bl) {
@@ -119,16 +119,16 @@ public class ManagingGradeStage extends Stage {
 						image=success;
 					if(!evaluated){
 						evaluated=true;
+						gauge+=15;
 					}
-					gauge+=15;
 				}else{
 						image=fail;
 					if(!evaluated){
 						evaluated=true;
+						gauge-=(3.3-grade)*penalty*10;
 					}
-					gauge-=(3.3-grade)*penalty*10;
 				}
-				return new GradeEval(f_width/3, f_height/3,0,0, image);
+				return new Bullet(f_width/3, f_height/3,0,0, image);
 			}
 		});
 	}

@@ -66,6 +66,9 @@ abstract public class Stage{
 	final public void addPattern(Pattern pattern){
 		patternList.add(pattern);
 	}
+	final public void addPattern(Pattern pattern,int index){
+		patternList.add(index, pattern);
+	}
 	final public void addPatterns(Pattern[] patternArray){
 		patternList.addAll(Arrays.asList(patternArray));
 	}
@@ -82,7 +85,7 @@ abstract public class Stage{
 			pattern.draw(buffg,play);
 	}
 	final public int second(){
-		return (int)(System.currentTimeMillis()-initialTime)/1000;
+		return (int)(System.currentTimeMillis()-initialTime)/1000+1;
 	}
 	
 	abstract public void init();//Stage ÃÊ±âÈ­
