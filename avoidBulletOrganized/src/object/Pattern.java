@@ -32,11 +32,8 @@ abstract public class Pattern{
 	final public void draw(Graphics buffg,Play play){
 		for(int i=0;i<list.size();i++){
 			Bullet bl=list.get(i);
-			buffg.drawImage(image, (int)bl.x, (int)bl.y, play);
+			buffg.drawImage(bl.image, (int)bl.x, (int)bl.y, play);
 		}
-	}
-	final public boolean inRange(Bullet bl){
-		return bl.inRange(stage.player_x, stage.player_y, stage.player_img, image);
 	}
 	final public void update(){
 		if(createWhen()){
@@ -62,6 +59,7 @@ abstract public class Pattern{
 	abstract public boolean createWhen();
 	abstract public boolean removeWhen(Bullet bl);
 	abstract public void whenCrash();
+	abstract public boolean inRange(Bullet bl);
 }
 
 

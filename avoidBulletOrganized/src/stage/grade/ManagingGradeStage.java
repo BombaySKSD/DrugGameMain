@@ -1,30 +1,31 @@
-package stage;
+package stage.grade;
 
 import java.awt.Font;
 import java.awt.Image;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
 import object.Bullet;
+import object.MultiFrameObject;
 import object.Pattern;
+import stage.Stage;
 
 
 public class ManagingGradeStage extends Stage {
-
 	private double bHeal,cDamage,fDamage,fGaugeDamage,penalty;
 	private int verticalSpeed=-100;
+	private int span=20;
 	private int horizontalSpeed=0;
-	
 	private Image ground_img;
 	private Image b,c,f;
 	private Image explosion_img;
-	
 	private GradePattern bPattern,cPattern,fPattern;
-
 	public double grade;
+	public boolean hit=false;
 	
 	@Override
 	public void init() {
-		span=20;
 		switch(difficulty){
 		case EASY:
 			grade=2.4;bHeal=-0.2;cDamage=0.2;fDamage=0.5;fGaugeDamage=10;penalty=6;break;
@@ -41,9 +42,55 @@ public class ManagingGradeStage extends Stage {
 		explosion_img = new ImageIcon("explosion.gif").getImage();
 		background_img = new ImageIcon("background1.png").getImage();
 		
-		bPattern=new GradePattern(b,explosion_img,this,0,bHeal,0);
-		cPattern=new GradePattern(c,explosion_img,this,5,cDamage,0);
-		fPattern=new GradePattern(f,explosion_img,this,10,fDamage,fGaugeDamage);
+		bPattern=new GradePattern(b,explosion_img,0,1000,bHeal,0,this);
+		cPattern=new GradePattern(c,explosion_img,5,1000,cDamage,0,this);
+		fPattern=new GradePattern(f,explosion_img,10,5000,fDamage,fGaugeDamage,this);
+
+		player=new Player(f_width/2,f_height-100,0,0,player_img,this);
+		addPattern(new Pattern() {
+			private boolean born=false;
+			@Override
+			public void whenCrash() {}
+			@Override
+			public boolean removeWhen(Bullet bl) {
+				return second()>17;
+			}
+			@Override
+			public boolean inRange(Bullet bl) {
+				return false;
+			}
+			@Override
+			public boolean createWhen() {
+				return born==false;
+			}
+			@Override
+			public Bullet create() {
+				born=true;
+				return player;
+			}
+		});
+		
+		addPattern(new Pattern() {
+			@Override
+			public boolean inRange(Bullet bl) {
+				return false;
+			}
+			@Override
+			public void whenCrash() {}
+			@Override
+			public boolean removeWhen(Bullet bl) {
+				return ((MultiFrameObject)bl).shouldRemove();
+			}
+			@Override
+			public boolean createWhen() {
+				return hit;
+			}
+			@Override
+			public Bullet create() {
+				hit=false;
+				return new MultiFrameObject(player.x-30, player.y-30, explosion_img, 100);
+			}
+		});
 		
 		addPatterns(new Pattern[]{bPattern,cPattern,fPattern});
 	}
@@ -51,7 +98,6 @@ public class ManagingGradeStage extends Stage {
 	@Override
 	public void play() {
 		updateAllPatterns();
-		updatePlayer();
 	}
 	@Override
 	public void draw() {
@@ -60,7 +106,6 @@ public class ManagingGradeStage extends Stage {
 		drawPlayer();
 		drawGround();
 		drawGrade();
-		evaluateResult();
 	}
 	@Override
 	public boolean continuing() {
@@ -71,45 +116,11 @@ public class ManagingGradeStage extends Stage {
 		return second()<=span;
 	}
 	
-	private void updatePlayer(){
-		if (keyLeft && player_x > 9) {
-			player_x -= 7;
-		}
-		if (keyRight && player_x + player_img.getWidth(null)+5 < f_width) {
-			player_x += 7;
-		}
-		if (keyUp) {
-			if(verticalSpeed==-100){
-				verticalSpeed=15;
-				if(keyLeft)
-					horizontalSpeed=-3;
-				else if (keyRight)
-					horizontalSpeed=3;
-				else
-					horizontalSpeed=0;
-			}
-		}
-		if(verticalSpeed<=-14)
-			verticalSpeed=-100;
-		else if(verticalSpeed!=-100){
-			verticalSpeed--;
-			player_x+=horizontalSpeed;
-			player_y-=verticalSpeed;
-		}
-	}
-	private void evaluateResult(){
-		if(grade>=3.3){
-			buffg.drawString("학점 관리 성공", f_xpos/2+200, f_ypos+420);
-		}else{
-			buffg.drawString("학점 관리 실패", f_xpos/2+200, f_ypos+420);
-		}
-	}
-	
 	private void drawBackground(){
 		buffg.drawImage(background_img, 0, 0, play);
 	}
 	private void drawPlayer(){
-		buffg.drawImage(player_img, player_x, player_y, play);
+		buffg.drawImage(player_img, (int)player.x, (int)player.y, play);
 	}
 	private void drawGround(){
 		buffg.drawImage(ground_img, 0, f_height-90, play);
@@ -127,15 +138,21 @@ class GradePattern extends Pattern{
 	Image explosion,image;
 	int startTime;
 	double damage,gaugeDamage;
-	int frequency=200;
+	double frequency=500;
 	
-	public GradePattern(Image image,Image explosion, Stage stage,int startTime,double damage,double gaugeDamage){
+	private ArrayList<MultiFrameObject> explosionList=new ArrayList<MultiFrameObject>(); 
+	
+	public GradePattern(Image image,Image explosion,
+			int startTime,double frequency,
+			double damage,double gaugeDamage,
+			Stage stage){
 		super(image,stage);
 		this.image=image;
 		this.explosion=explosion;
 		this.startTime=startTime;
 		this.damage=damage;
 		this.gaugeDamage=gaugeDamage;
+		this.frequency=frequency;
 	}
 	
 	public Bullet create() {
@@ -147,14 +164,16 @@ class GradePattern extends Pattern{
 		return stage.count%(10*stage.fps/frequency+10)==0 && stage.second()>=startTime;
 	}
 	public boolean removeWhen(Bullet bl){
-		return bl.inRange(stage.player_x, stage.player_y, stage.player_img, image)
-				|| bl.inScreen(stage)
+		return bl.inRange(stage.player)
+				|| !bl.inArea(0,stage.f_width,0,stage.f_height)
 				|| stage.second()>17;
 	}
 	public void whenCrash(){
 		stage.gauge-=gaugeDamage;
 		((ManagingGradeStage)stage).grade-=damage;
-		stage.buffg.drawImage(explosion, stage.player_x-explosion.getWidth(null)/2+5,
-				stage.player_y-explosion.getHeight(null)/2+7, stage.play);
+		((ManagingGradeStage)stage).hit=true;
+	}
+	public boolean inRange(Bullet bl){
+		return bl.inRange(stage.player);
 	}
 }

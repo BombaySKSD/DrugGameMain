@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import object.Pattern;
-
 import main.Play;
+import object.Pattern;
+import stage.grade.Player;
 
 abstract public class Stage{
 	public final static int EASY=0;
@@ -29,8 +29,7 @@ abstract public class Stage{
 	public int difficulty;
 	public int fps;
 	
-	public int player_x;
-	public int player_y;
+	public Player player;
 	public double gauge;
 	public int span;
 	
@@ -43,6 +42,7 @@ abstract public class Stage{
 	public Image player_img;
 	public Image background_img;
 	
+	private long initialTime;
 	private ArrayList<Pattern> patternList=new ArrayList<Pattern>();
 	
 	public Stage(){}
@@ -58,10 +58,8 @@ abstract public class Stage{
 		f_xpos=play.f_xpos;
 		f_ypos=play.f_ypos;
 		fps=play.fps;
-		player_x=f_width/2;
-		player_y=f_height-100;
 		gauge=play.gauge;
-		
+		initialTime=System.currentTimeMillis();
 	}
 	final public void setDifficulty(int difficulty){
 		this.difficulty=difficulty;
@@ -86,7 +84,7 @@ abstract public class Stage{
 			pattern.draw(buffg,play);
 	}
 	final public int second(){
-		return count/fps+1;
+		return (int)(System.currentTimeMillis()-initialTime)/1000;
 	}
 	
 	abstract public void init();//Stage √ ±‚»≠
