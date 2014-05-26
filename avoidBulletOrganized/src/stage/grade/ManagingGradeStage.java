@@ -28,7 +28,7 @@ public class ManagingGradeStage extends Stage {
 	
 	@Override
 	public void init() {
-		switch(difficulty){
+		switch(getDifficulty()){
 		case EASY:
 			grade=2.4;bHeal=-0.2;cDamage=0.2;fDamage=0.5;fGaugeDamage=10;penalty=6;break;
 		case MODERATE:
