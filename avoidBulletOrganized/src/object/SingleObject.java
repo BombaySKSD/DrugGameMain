@@ -20,6 +20,8 @@ public class SingleObject {
 		x += speed * Math.sin(angle);
 		y += speed * Math.cos(angle);
 	}
+	
+	
 	public boolean inRange(SingleObject player){
 		return Math.abs((player.x + player.image.getWidth(null) / 2)
 				- (this.x + image.getWidth(null) / 2)) < (image.getWidth(null) / 2 + player.image.getWidth(null) / 2)

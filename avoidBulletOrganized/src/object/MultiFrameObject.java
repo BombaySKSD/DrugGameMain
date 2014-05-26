@@ -2,7 +2,7 @@ package object;
 
 import java.awt.Image;
 
-public class MultiFrameObject extends SingleObject {
+public class MultiFrameObject extends SingleObject{
 	private long lifeSpan=1;
 	private long initialTime;
 
