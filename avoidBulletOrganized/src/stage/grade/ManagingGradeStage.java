@@ -14,9 +14,9 @@ public class ManagingGradeStage extends Stage {
 	private Image 
 	player_img = getImage("player.gif"),
 	ground_img = getImage("ground.gif"),
-	b = getImage("bullet.gif"),
-	c=getImage("another_bullet.gif"),
-	f=getImage("FFF.gif"),
+	b = getImage("rainB.gif").getScaledInstance(40,40,Image.SCALE_FAST),
+	c=getImage("seedC.gif").getScaledInstance(40,40,Image.SCALE_FAST),
+	f=getImage("missileF.gif").getScaledInstance(60,90,Image.SCALE_FAST),
 	explosion_img = getImage("explosion.gif"),
 	background_img = getImage("background1.png"),
 	success=getImage("success.gif"),
@@ -38,9 +38,9 @@ public class ManagingGradeStage extends Stage {
 		}
 		player=new Player(getWidth()/2,getHeight()-100,0,0,player_img,ManagingGradeStage.this);
 		
-		addPattern(new GradePattern(b,explosion_img,0,1000,bHeal,0,this));
-		addPattern(new GradePattern(c,explosion_img,5,1000,cDamage,0,this));
-		addPattern(new GradePattern(f,explosion_img,10,5000,fDamage,fGaugeDamage,this));
+		addPattern(new GradePattern('b',b,explosion_img,0,1000,bHeal,0,this));
+		addPattern(new GradePattern('c',c,explosion_img,5,1000,cDamage,0,this));
+		addPattern(new GradePattern('f',f,explosion_img,10,3000,fDamage,fGaugeDamage,this));
 		addPattern(new Pattern() {
 			private boolean born=false;
 			@Override
