@@ -12,7 +12,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import object.Stage;
-import stage.grade.ManagingGradeStage;
+import wry.WryStage;
 
 @SuppressWarnings("serial")
 final public class Play extends JFrame implements KeyListener{
@@ -27,7 +27,7 @@ final public class Play extends JFrame implements KeyListener{
 	private Random rand;
 	
 	@SuppressWarnings("rawtypes")
-	private Class[] stages={/*AvoidBulletStage.class,*/ManagingGradeStage.class};//실행될 Stages 리스트
+	private Class[] stages={/*AvoidBulletStage.class,*//*ManagingGradeStage.class,*/WryStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
