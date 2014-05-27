@@ -3,8 +3,10 @@ package object;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
 import main.Play;
@@ -57,7 +59,7 @@ abstract public class Stage{
 	 */
 	public boolean stageFailed=false;
 	
-	private Graphics buffg;
+	private Graphics2D buffg;
 	private Play play;
 	private long initialTime;
 	private int difficulty;
@@ -80,7 +82,7 @@ abstract public class Stage{
 	 * 그래픽 버퍼를 설정합니다. Stage 시작 전에 넣어줘야 합니다.
 	 * @param buffg 그래픽 버퍼 객체
 	 */
-	final public void setBuffer(Graphics buffg){
+	final public void setBuffer(Graphics2D buffg){
 		this.buffg=buffg;
 	}
 	/**
@@ -169,7 +171,7 @@ abstract public class Stage{
 	 * @return
 	 */
 	final public double second(){
-		return (System.currentTimeMillis()-initialTime)/1000+1;
+		return (System.currentTimeMillis()-initialTime)/1000.0+1;
 	}
 	/**
 	 * gif,png 등의 포맷을 가진 이미지를 인수로 넘겨받아 {@link SingleObject} 객체의 생성에 쓸 수 있는 Image 객체를 리턴합니다. 

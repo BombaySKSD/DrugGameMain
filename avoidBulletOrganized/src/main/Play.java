@@ -1,16 +1,17 @@
 package main;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
-import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 import object.Stage;
-
 import stage.grade.ManagingGradeStage;
 
 @SuppressWarnings("serial")
@@ -87,7 +88,7 @@ final public class Play extends JFrame implements KeyListener{
 	public void paint(Graphics g) {
 		try{
 			buffImage = createImage(f_width, f_height);
-			stage.setBuffer(buffImage.getGraphics());
+			stage.setBuffer((Graphics2D)buffImage.getGraphics());
 			update(g);
 		}catch(NullPointerException e){}
 	}
