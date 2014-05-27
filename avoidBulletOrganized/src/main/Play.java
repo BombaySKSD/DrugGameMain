@@ -68,11 +68,15 @@ final public class Play extends JFrame implements KeyListener{
 			stage.setDifficulty(Stage.MODERATE);
 			stage.init();
 			while(stage.continuing()){
+				long initialTime=System.currentTimeMillis();
 				stage.play();
 				stage.count++;
 				repaint();
 				try {
-					Thread.sleep(1000/fps);
+					long delay=1000/fps-(System.currentTimeMillis()-initialTime);
+					if(delay>0){
+						Thread.sleep(delay);
+					}
 				} catch (InterruptedException e) {}
 			}
 			if(stage.stageFailed){
