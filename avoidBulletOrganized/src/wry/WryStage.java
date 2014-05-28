@@ -20,6 +20,8 @@ public class WryStage extends Stage {
 	refrigerator_img=getImage("refrigerator.jpg").getScaledInstance(100, 150, Image.SCALE_FAST), 
 	refrigerator_broken=getImage("refrigerator_broken.png").getScaledInstance(100, 150, Image.SCALE_FAST);
 	
+	private double refrigerator_vel=0.00001;
+	
 	@Override
 	public void init() {
 		addPattern(new Pattern() {
@@ -59,7 +61,8 @@ public class WryStage extends Stage {
 			@Override
 			public SingleObject create() {
 				created=true;
-				return new Refrigerator(getWidth()/2-refrigerator_broken.getWidth(null)/2-50,0,0.0001,refrigerator_img);
+				return new Refrigerator(getWidth()/2-refrigerator_broken.getWidth(null)/2-50,0,
+						refrigerator_vel,refrigerator_img);
 			}
 		});
 		addPattern(new Pattern() {
@@ -104,7 +107,7 @@ public class WryStage extends Stage {
 			
 			@Override
 			public boolean removeWhen(SingleObject bl) {
-				return !bl.inArea(0, getWidth(), 0, getHeight());
+				return !bl.inArea(-100, getWidth()+100, 0, getHeight());
 			}
 			
 			@Override
@@ -122,7 +125,7 @@ public class WryStage extends Stage {
 			public SingleObject create() {
 				Random rand=new Random();
 				Sighe bl=new Sighe(getWidth()/2, getHeight()-100, 
-						Math.PI*(0.75+0.5*rand.nextDouble()), rand.nextDouble()*5+2.5, sighe);
+						Math.PI*(0.75+0.5*rand.nextDouble()), rand.nextDouble()*1.5+0.8, sighe,WryStage.this);
 				total++;
 				return bl;
 			}
@@ -175,19 +178,26 @@ public class WryStage extends Stage {
 class Sighe extends SingleObject{
 
 	Random rand=new Random();
-	double acc=0.05;
+	double acc=0.005;
 	double vx,vy;
+	Stage stage;
+	boolean impact=false;
 	
 	@Override
 	public void move() {
 		x+=vx;
 		y+=vy;
 		vy+=acc;
+		if(!inArea(0, stage.getWidth(), -1, stage.getHeight()+100) && !impact){
+			vx*=-1;
+			impact=true;
+		}
 		rotate(0.07*rand.nextDouble());
 	}
 
-	public Sighe(double x, double y, double angle, double speed, Image image) {
+	public Sighe(double x, double y, double angle, double speed, Image image,Stage stage) {
 		super(x, y, angle, speed, image);
+		this.stage=stage;
 		vx=speed*Math.sin(angle);
 		vy=speed*Math.cos(angle);
 	}	
