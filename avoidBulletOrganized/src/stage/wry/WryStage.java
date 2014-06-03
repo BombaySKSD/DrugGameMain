@@ -18,7 +18,8 @@ public class WryStage extends Stage {
 	ground_img=getImage("ground.gif"),
 	background_img = getImage("background1.png"),
 	refrigerator_img=getImage("refrigerator.jpg").getScaledInstance(100, 150, Image.SCALE_FAST), 
-	refrigerator_broken=getImage("refrigerator_broken.png").getScaledInstance(100, 150, Image.SCALE_FAST);
+	refrigerator_broken=getImage("refrigerator_broken.png").getScaledInstance(100, 150, Image.SCALE_FAST),
+	refrigerator_door=getImage("refrigerator_door").getScaledInstance(50,75,Image.SCALE_FAST);
 	
 	private double refrigerator_vel=0.00001;
 	
@@ -27,15 +28,10 @@ public class WryStage extends Stage {
 		addPattern(new Pattern() {
 			boolean created=false;
 			@Override
-			public void whenCrash() {
-				// TODO Auto-generated method stub
-				
-			}
-			
+			public void whenCrash() {}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
 				if(refrigeratorFallen){
-					System.out.println("adadsf");
 					return false;
 				}else{
 					if(bl.inArea(0, getWidth(), 0, getHeight()-100-bl.image.getHeight(null)))
@@ -46,22 +42,50 @@ public class WryStage extends Stage {
 					}
 				}
 			}
-			
 			@Override
 			public boolean inRange(SingleObject bl) {
-				// TODO Auto-generated method stub
 				return false;
 			}
-			
 			@Override
 			public boolean createWhen() {
 				return second()>0 && !created;
 			}
-			
 			@Override
 			public SingleObject create() {
 				created=true;
 				return new Refrigerator(getWidth()/2-refrigerator_broken.getWidth(null)/2-50,0,
+						refrigerator_vel,refrigerator_img);
+			}
+		});
+		addPattern(new Pattern() {
+			boolean created=false;
+			@Override
+			public void whenCrash() {}
+			@Override
+			public boolean removeWhen(SingleObject bl) {
+				if(refrigeratorFallen){
+					return false;
+				}else{
+					if(bl.inArea(0, getWidth(), 0, getHeight()-100-bl.image.getHeight(null)))
+						return false;
+					else{
+						refrigeratorFallen=true;
+						return true;
+					}
+				}
+			}
+			@Override
+			public boolean inRange(SingleObject bl) {
+				return false;
+			}
+			@Override
+			public boolean createWhen() {
+				return second()>0 && !created;
+			}
+			@Override
+			public SingleObject create() {
+				created=true;
+				return new Sighe(getWidth()/2-refrigerator_door.getWidth(null)/2-50,0,
 						refrigerator_vel,refrigerator_img);
 			}
 		});

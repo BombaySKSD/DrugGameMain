@@ -85,6 +85,8 @@ final public class Play extends JFrame implements KeyListener{
 			}
 		}
 	}
+	
+	
 	public void paint(Graphics g) {
 		try{
 			buffImage = createImage(f_width, f_height);

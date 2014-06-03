@@ -47,7 +47,7 @@ public class ManagingGradeStage extends Stage {
 			public void whenCrash() {}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
-				return second()>17;
+				return false;
 			}
 			@Override
 			public boolean inRange(SingleObject bl) {
