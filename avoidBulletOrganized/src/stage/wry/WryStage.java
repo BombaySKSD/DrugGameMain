@@ -1,4 +1,4 @@
-package wry;
+package stage.wry;
 
 import java.awt.Image;
 import java.util.Random;

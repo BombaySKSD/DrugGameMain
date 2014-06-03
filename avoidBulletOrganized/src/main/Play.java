@@ -12,7 +12,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import object.Stage;
-import wry.WryStage;
+import stage.wry.WryStage;
 
 @SuppressWarnings("serial")
 final public class Play extends JFrame implements KeyListener{
