@@ -41,13 +41,14 @@ public class ManagingGradeStage extends Stage {
 		addPattern(new GradePattern('b',b,explosion_img,0,1000,bHeal,0,this));
 		addPattern(new GradePattern('c',c,explosion_img,5,1000,cDamage,0,this));
 		addPattern(new GradePattern('f',f,explosion_img,10,3000,fDamage,fGaugeDamage,this));
+		// pattern player SingleObject
 		addPattern(new Pattern() {
 			private boolean born=false;
 			@Override
 			public void whenCrash() {}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
-				return second()>17;
+				return false;
 			}
 			@Override
 			public boolean inRange(SingleObject bl) {
@@ -63,6 +64,7 @@ public class ManagingGradeStage extends Stage {
 				return player;
 			}
 		});
+		// pattern of explosion_img SingleObject
 		addPattern(new Pattern() {
 			@Override
 			public boolean inRange(SingleObject bl) {
@@ -84,6 +86,7 @@ public class ManagingGradeStage extends Stage {
 				return new MultiFrameObject(player.x-30, player.y-30, explosion_img, 100);
 			}
 		});
+		// pattern of success/fail
 		addPattern(new Pattern() {
 			private boolean evaluated=false;
 			@Override
