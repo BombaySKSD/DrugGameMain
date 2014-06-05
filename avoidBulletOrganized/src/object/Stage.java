@@ -180,7 +180,10 @@ abstract public class Stage{
 	final public Image getImage(String filepath){
 		return new ImageIcon(filepath).getImage();
 	}
-	
+
+	final public Sound getSound(String path){
+		return new Sound(path);
+	}
 	/**
 	 * Stage 객체가 작동을 시작하기 전에 초기화를 할 수 있는 메서드입니다.
 	 * Stage 클래스는 시스템 내에서 의도한 생성자가 호출된다는 보장이 없으므로
