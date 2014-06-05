@@ -11,9 +11,9 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import alcohol.AlcoholStage;
 import object.Stage;
 
+import stage.alcohol.AlcoholStage;
 import stage.grade.ManagingGradeStage;
 import stage.wry.WryStage;
 

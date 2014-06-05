@@ -1,4 +1,4 @@
-package alcohol;
+package stage.alcohol;
 
 import java.awt.Font;
 import java.awt.Image;
