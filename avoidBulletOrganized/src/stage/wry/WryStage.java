@@ -1,7 +1,6 @@
 package stage.wry;
 
 import java.awt.Image;
-import java.util.Random;
 
 import object.Pattern;
 import object.SingleObject;
@@ -27,18 +26,17 @@ public class WryStage extends Stage {
 	@Override
 	public void init() {
 		
-		//fridge falling
-		addPattern(new FridgePattern(this));
+		//tornado
+		addPattern(new TornadoPattern(this));
 		
+		//fridge falling
+		addPattern(new FridgePattern(this));		
 		//fallen fridge
 		addPattern(new FallenFridge(this));
-		
 		//broken door
 		addPattern(new FridgeDoor(this));
-		
 		//sighe bullets
 		addPattern(new SighePattern(this));
-		
 		
 		//player
 		addPattern(new Pattern() {

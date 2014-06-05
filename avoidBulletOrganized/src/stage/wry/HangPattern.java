@@ -4,7 +4,7 @@ import object.Pattern;
 import object.SingleObject;
 
 public class HangPattern extends Pattern {
-
+	
 	@Override
 	public SingleObject create() {
 		// TODO Auto-generated method stub
