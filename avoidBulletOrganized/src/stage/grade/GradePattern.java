@@ -43,7 +43,7 @@ class GradePattern extends Pattern{
 	}
 	public boolean removeWhen(SingleObject bl){
 		return bl.inRange(stage.player)
-				|| !bl.inArea(0,stage.getWidth(),0,stage.getHeight())
+				|| !bl.inArea(-20,stage.getWidth()+20,0,stage.getHeight())
 				|| stage.second()>17;
 	}
 	public void whenCrash(){

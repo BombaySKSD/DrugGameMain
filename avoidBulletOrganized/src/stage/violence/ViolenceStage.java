@@ -19,6 +19,7 @@ public class ViolenceStage extends Stage {
 	int sit_case=-1;
 	int erupt_position=400;
 	boolean bullet_hit=false;
+	int bullet_damage=2;
 
 	private Image
 	player_img = getImage("player.gif"),
@@ -91,7 +92,6 @@ public class ViolenceStage extends Stage {
 						screen_turned=true;
 						break;
 					default:
-						player.velocity=-4.0;
 						break;
 					}
 				}
@@ -182,7 +182,7 @@ public class ViolenceStage extends Stage {
 			@Override
 			public void whenCrash() {
 				bullet_hit=true;
-				gauge-=4;
+				gauge-=bullet_damage;
 			}
 			@Override
 			public boolean inRange(SingleObject bl) {
@@ -208,7 +208,33 @@ public class ViolenceStage extends Stage {
 			@Override
 			public void whenCrash() {
 				bullet_hit=true;
-				gauge-=4;
+				gauge-=bullet_damage;
+			}
+			@Override
+			public boolean inRange(SingleObject bl) {
+				return bl.inRange(player);
+			}
+		});
+		/**
+		 * pattern of sniping bullet
+		 */
+		addPattern(new Pattern() {
+			@Override
+			public SingleObject create() {
+				return new SingleObject(player.x,0,0,1.2,bullet);
+			}
+			@Override
+			public boolean createWhen() {
+				return count%500==0;
+			}
+			@Override
+			public boolean removeWhen(SingleObject bl) {
+				return bl.y>=getHeight()-80 || (bullet_hit && bl.inRange(player));
+			}
+			@Override
+			public void whenCrash() {
+				bullet_hit=true;
+				gauge-=bullet_damage;
 			}
 			@Override
 			public boolean inRange(SingleObject bl) {
@@ -233,7 +259,22 @@ public class ViolenceStage extends Stage {
 		setFont(new Font("Default", Font.BOLD, 20));
 		drawString("TIME : " + String.format("%.0f",second()), getWidth()/2-200, getHeight()/2+240);
 		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
-		drawString("sit_case : " + sit_case, getWidth()/2-200, getHeight()/2+280);
+		if (second()>=4) {
+			switch(sit_case) {
+			case 0:
+				drawString("LEFT? RIGHT?", getWidth()/2-200, getHeight()/2+280);
+				break;
+			case 1:
+				drawString("SPEEDSTER!", getWidth()/2-200, getHeight()/2+280);
+				break;
+			case 2:
+				drawString("TERRIBLE TURTLE!", getWidth()/2-200, getHeight()/2+280);
+				break;
+			default:
+				drawString("LUCKY!", getWidth()/2-200, getHeight()/2+280);
+				break;
+			}
+		}
 	}
 
 	@Override

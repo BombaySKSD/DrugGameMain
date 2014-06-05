@@ -34,7 +34,7 @@ final public class Play extends JFrame implements KeyListener{
 	/**
 	 * Stage 배열
 	 */
-	private Class[] stages={ManagingGradeStage.class,AlcoholStage.class};//실행될 Stages 리스트
+	private Class[] stages={/*ManagingGradeStage.class,AlcoholStage.class,*/ViolenceStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
