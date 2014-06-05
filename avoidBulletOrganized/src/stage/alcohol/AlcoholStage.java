@@ -46,6 +46,7 @@ public class AlcoholStage extends Stage {
 			damage_speed=1.0/fps;
 		}
 		player=new Player(getWidth()/2,getHeight()-100,0,0,player_img,AlcoholStage.this);
+		player.velocity=4.0;
 		
 		/**
 		 *  pattern player SingleObject

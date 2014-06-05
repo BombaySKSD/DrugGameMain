@@ -9,6 +9,7 @@ import object.Stage;
 public class Player extends SingleObject{
 	private Stage stage;
 	private int verticalSpeed=-100;
+	public double velocity;
 	public Player(double x, double y, double angle, double speed, Image image,Stage stage) {
 		super(x, y, angle, speed, image);
 		this.stage=stage;
@@ -20,10 +21,10 @@ public class Player extends SingleObject{
 			return;
 		
 		if (stage.keyLeft && x > 9) {
-			x -= 4;
+			x -= velocity;
 		}
 		if (stage.keyRight && x + image.getWidth(null)+5 < stage.getWidth()) {
-			x += 4;
+			x += velocity;
 		}
 		if (stage.keyUp && verticalSpeed==-100) {
 			verticalSpeed=15;

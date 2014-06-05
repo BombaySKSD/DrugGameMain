@@ -7,6 +7,7 @@ import object.Pattern;
 import object.SingleObject;
 import object.Stage;
 import stage.grade.Player;
+import stage.violence.ViolenceStage;
 
 public class WryStage extends Stage {
 
@@ -21,12 +22,14 @@ public class WryStage extends Stage {
 	refrigerator_broken=getImage("refrigerator_broken.png").getScaledInstance(100, 150, Image.SCALE_FAST),
 	refrigerator_door=getImage("refrigerator_door.png").getScaledInstance(100, 90, Image.SCALE_FAST);
 	
-	
+	public Player player;
 	protected double refrigerator_vel=0.00001;
 	
 	@Override
 	public void init() {
 		background_img=background_img.getScaledInstance(getWidth(), getHeight(), Image.SCALE_FAST);
+		player = new Player(getWidth() / 2, getHeight() - 100, 0, 0, player_img, WryStage.this);
+		player.velocity=4.0;
 		
 		//hang rolling
 		addPattern(new HangPattern(this));
@@ -52,7 +55,7 @@ public class WryStage extends Stage {
 			public void whenCrash() {}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
-				return second()>17;
+				return false;
 			}
 			@Override
 			public boolean inRange(SingleObject bl) {
@@ -65,7 +68,7 @@ public class WryStage extends Stage {
 			@Override
 			public SingleObject create() {
 				born=true;
-				return new Player(50,getHeight()-100,0,0,player_img,WryStage.this);
+				return player;
 			}
 		});
 		

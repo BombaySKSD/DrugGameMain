@@ -37,6 +37,7 @@ public class ManagingGradeStage extends Stage {
 			grade=2.2;bHeal=-0.1;cDamage=0.4;fDamage=0.9;fGaugeDamage=16;penalty=8;break;
 		}
 		player=new Player(getWidth()/2,getHeight()-100,0,0,player_img,ManagingGradeStage.this);
+		player.velocity=4.0;
 		
 		addPattern(new GradePattern('b',b,explosion_img,0,1000,bHeal,0,this));
 		addPattern(new GradePattern('c',c,explosion_img,5,1000,cDamage,0,this));
