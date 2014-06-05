@@ -40,7 +40,7 @@ final public class Play extends JFrame implements KeyListener{
 	public Play() {		
 		f_width=800;
 		f_height=600;
-		//gauge=100.0;
+		gauge=100.0;
 		rand=new Random();
 		setTitle("avoidBullet");
 		setSize(f_width, f_height);
@@ -89,6 +89,7 @@ final public class Play extends JFrame implements KeyListener{
 			if(stage.stageFailed){
 				break;
 			}
+			gauge=stage.gauge;
 		}
 	}
 	
