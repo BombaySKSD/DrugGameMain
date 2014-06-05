@@ -32,14 +32,14 @@ final public class Play extends JFrame implements KeyListener{
 	/**
 	 * Stage 배열
 	 */
-	private Class[] stages={AlcoholStage.class};//실행될 Stages 리스트
+	private Class[] stages={ManagingGradeStage.class,AlcoholStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
 	public Play() {		
 		f_width=800;
 		f_height=600;
-		gauge=100.0;
+		//gauge=100.0;
 		rand=new Random();
 		setTitle("avoidBullet");
 		setSize(f_width, f_height);
@@ -62,7 +62,7 @@ final public class Play extends JFrame implements KeyListener{
 	}
 
 	public void play() {
-		for(int i=0;i<stages.length;i++){
+		for(int i=0;i<stages.length*2;i++){
 			int nextNum=rand.nextInt(stages.length);
 			try {
 				stage=(Stage)stages[nextNum].newInstance();

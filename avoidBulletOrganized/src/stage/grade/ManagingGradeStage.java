@@ -135,7 +135,7 @@ public class ManagingGradeStage extends Stage {
 		drawImage(ground_img, 0, getHeight()-90);
 		
 		setFont(new Font("Default", Font.BOLD, 20));
-		drawString("TIME : " + second(), getWidth()/2-200, getHeight()/2+240);
+		drawString("TIME : " + String.format("%.0f",second()), getWidth()/2-200, getHeight()/2+240);
 		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
 		drawString("GRADE : " + String.format("%.1f",grade), getWidth()/2-200, getHeight()/2+280);
 		
