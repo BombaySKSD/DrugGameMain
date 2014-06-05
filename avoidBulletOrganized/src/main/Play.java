@@ -15,6 +15,7 @@ import object.Stage;
 
 import stage.alcohol.AlcoholStage;
 import stage.grade.ManagingGradeStage;
+import stage.violence.ViolenceStage;
 import stage.wry.WryStage;
 
 @SuppressWarnings("serial")
@@ -33,7 +34,7 @@ final public class Play extends JFrame implements KeyListener{
 	/**
 	 * Stage 배열
 	 */
-	private Class[] stages={WryStage.class};//실행될 Stages 리스트
+	private Class[] stages={AlcoholStage.class,ManagingGradeStage.class,ViolenceStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
@@ -63,7 +64,7 @@ final public class Play extends JFrame implements KeyListener{
 	}
 
 	public void play() {
-		for(int i=0;i<stages.length*2;i++){
+		for(int i=0;i<stages.length*4;i++){
 			int nextNum=rand.nextInt(stages.length);
 			try {
 				stage=(Stage)stages[nextNum].newInstance();

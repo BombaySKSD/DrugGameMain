@@ -20,12 +20,15 @@ public class Player extends SingleObject{
 		if(stage.count%5!=0)
 			return;
 		
-		if (stage.keyLeft && x > 9) {
+		if (stage.keyLeft /*&& x > 9*/) {
 			x -= velocity;
 		}
-		if (stage.keyRight && x + image.getWidth(null)+5 < stage.getWidth()) {
+		if (stage.keyRight /*&& x + image.getWidth(null)+5 < stage.getWidth()*/) {
 			x += velocity;
 		}
+		if (x<3) x=3;
+		if (x>stage.getWidth()-13) x=stage.getWidth()-13;
+		
 		if (stage.keyUp && verticalSpeed==-100) {
 			verticalSpeed=15;
 		}

@@ -80,7 +80,7 @@ public class AlcoholStage extends Stage {
 			Random rand = new Random();
 			@Override
 			public SingleObject create() {
-				return new SingleObject(rand.nextInt(790)+5,1,0.0,1.0+rand.nextDouble()*0.2,soju);
+				return new SingleObject(rand.nextInt(760)+20,1,0.0,1.0+rand.nextDouble()*0.2,soju);
 			}
 
 			@Override
@@ -130,7 +130,7 @@ public class AlcoholStage extends Stage {
 
 			@Override
 			public boolean inRange(SingleObject bl) {
-				return bl.y>=getWidth()-80;
+				return bl.inRange(player);
 			}
 		});
 		/**
@@ -161,7 +161,7 @@ public class AlcoholStage extends Stage {
 
 			@Override
 			public boolean inRange(SingleObject bl) {
-				return bl.y>=getWidth()-80;
+				return bl.inRange(player);
 			}
 		});
 	}
