@@ -13,8 +13,9 @@ import javax.swing.JFrame;
 
 import alcohol.AlcoholStage;
 import object.Stage;
+
 import stage.grade.ManagingGradeStage;
-import wry.WryStage;
+import stage.wry.WryStage;
 
 @SuppressWarnings("serial")
 final public class Play extends JFrame implements KeyListener{
@@ -90,6 +91,8 @@ final public class Play extends JFrame implements KeyListener{
 			}
 		}
 	}
+	
+	
 	public void paint(Graphics g) {
 		try{
 			buffImage = createImage(f_width, f_height);
