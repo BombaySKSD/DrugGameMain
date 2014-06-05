@@ -1,5 +1,6 @@
 package stage.wry;
 
+import java.awt.Font;
 import java.awt.Image;
 
 import object.Pattern;
@@ -14,8 +15,8 @@ public class WryStage extends Stage {
 	protected Image 
 	sighe=getImage("sighe.png").getScaledInstance(20, 30, Image.SCALE_FAST),
 	player_img=getImage("player.gif"),
-	ground_img=getImage("ground.gif"),
-	background_img = getImage("background1.png"),
+	ground_img=getImage("wryground.png"),
+	background_img = getImage("WryMaster.png"),
 	refrigerator_img=getImage("refrigerator.jpg").getScaledInstance(100, 150, Image.SCALE_FAST), 
 	refrigerator_broken=getImage("refrigerator_broken.png").getScaledInstance(100, 150, Image.SCALE_FAST),
 	refrigerator_door=getImage("refrigerator_door.png").getScaledInstance(100, 90, Image.SCALE_FAST);
@@ -25,6 +26,12 @@ public class WryStage extends Stage {
 	
 	@Override
 	public void init() {
+		background_img=background_img.getScaledInstance(getWidth(), getHeight(), Image.SCALE_FAST);
+		
+		//hang rolling
+		addPattern(new HangPattern(this));
+		//hang fragments
+		addPattern(new Fragments(this));
 		
 		//tornado
 		addPattern(new TornadoPattern(this));
@@ -75,6 +82,10 @@ public class WryStage extends Stage {
 		drawImage(background_img, 0, 0);
 		drawAllPatterns();
 		drawImage(ground_img, 0, getHeight()-90);
+		
+		setFont(new Font("Default", Font.BOLD, 20));
+		drawString("TIME : " + Math.round(second()), getWidth()/2-200, getHeight()/2+240);
+		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
 
 	}
 
