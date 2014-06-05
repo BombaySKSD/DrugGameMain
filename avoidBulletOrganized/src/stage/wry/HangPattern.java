@@ -5,7 +5,6 @@ import java.util.Random;
 
 import object.Pattern;
 import object.SingleObject;
-import object.Stage;
 
 //hang rolling
 public class HangPattern extends Pattern{
