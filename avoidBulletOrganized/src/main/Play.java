@@ -29,6 +29,10 @@ final public class Play extends JFrame implements KeyListener{
 	
 	private Image buffImage; // 더블버퍼링을위한버퍼
 	private Random rand;
+
+	Image anotherImage;
+	boolean another=false,first=true;
+	DoubleBufferThread t;
 	
 	@SuppressWarnings("rawtypes")
 	/**
@@ -93,18 +97,35 @@ final public class Play extends JFrame implements KeyListener{
 			gauge=stage.gauge;
 		}
 	}
-	
-	
+	class DoubleBufferThread extends Thread{
+		boolean draw=false;
+		@Override
+		public void run() {
+			super.run();
+			while(true){
+				if(draw){
+					draw=false;
+					stage.draw();
+				}
+			}
+		}
+	}
 	public void paint(Graphics g) {
 		try{
-			buffImage = createImage(f_width, f_height);
-			stage.setBuffer((Graphics2D)buffImage.getGraphics());
-			update(g);
+			if(first){
+				first=false;
+				t=new DoubleBufferThread();
+				t.start();
+				buffImage = createImage(f_width, f_height);
+				stage.setBuffer((Graphics2D)buffImage.getGraphics());
+			}else{
+				g.drawImage(anotherImage, 0, 0, this);
+				anotherImage=buffImage;
+				buffImage = createImage(f_width, f_height);
+				stage.setBuffer((Graphics2D)buffImage.getGraphics());
+				t.draw=true;
+			}
 		}catch(NullPointerException e){}
-	}
-	public void update(Graphics g) {
-		stage.draw();
-		g.drawImage(buffImage, 0, 0, this);
 	}
 	
 	public void keyPressed(KeyEvent e) {
