@@ -32,7 +32,6 @@ final public class Play extends JFrame implements KeyListener{
 
 	Image anotherImage;
 	boolean another=false,first=true;
-	DoubleBufferThread t;
 	
 	@SuppressWarnings("rawtypes")
 	/**
@@ -97,7 +96,7 @@ final public class Play extends JFrame implements KeyListener{
 			gauge=stage.gauge;
 		}
 	}
-	class DoubleBufferThread extends Thread{
+	/*class DoubleBufferThread extends Thread{
 		boolean draw=false;
 		@Override
 		public void run() {
@@ -109,10 +108,10 @@ final public class Play extends JFrame implements KeyListener{
 				}
 			}
 		}
-	}
+	}*/
 	public void paint(Graphics g) {
 		try{
-			if(first){
+			/*if(first){
 				first=false;
 				t=new DoubleBufferThread();
 				t.start();
@@ -124,7 +123,11 @@ final public class Play extends JFrame implements KeyListener{
 				buffImage = createImage(f_width, f_height);
 				stage.setBuffer((Graphics2D)buffImage.getGraphics());
 				t.draw=true;
-			}
+			}*/
+			buffImage = createImage(f_width, f_height);
+			stage.setBuffer((Graphics2D)buffImage.getGraphics());
+			stage.draw();
+			g.drawImage(buffImage, 0, 0, this);
 		}catch(NullPointerException e){}
 	}
 	
