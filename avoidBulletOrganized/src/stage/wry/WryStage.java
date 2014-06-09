@@ -11,7 +11,9 @@ import stage.violence.ViolenceStage;
 
 public class WryStage extends Stage {
 
-	protected boolean refrigeratorFallen=false;
+	protected boolean 
+	refrigeratorFallen=false,
+	hangCrashed=false;
 	
 	protected Image 
 	sighe=getImage("sighe.png").getScaledInstance(20, 30, Image.SCALE_FAST),
@@ -20,7 +22,10 @@ public class WryStage extends Stage {
 	background_img = getImage("WryMaster.png"),
 	refrigerator_img=getImage("refrigerator.jpg").getScaledInstance(100, 150, Image.SCALE_FAST), 
 	refrigerator_broken=getImage("refrigerator_broken.png").getScaledInstance(100, 150, Image.SCALE_FAST),
-	refrigerator_door=getImage("refrigerator_door.png").getScaledInstance(100, 90, Image.SCALE_FAST);
+	refrigerator_door=getImage("refrigerator_door.png").getScaledInstance(100, 90, Image.SCALE_FAST),
+	hang_img=getImage("hang/hang.png").getScaledInstance(90, 70, Image.SCALE_FAST),
+	hang_frag=hang_img.getScaledInstance(20, 20, Image.SCALE_FAST),
+	hang_content=getImage("bullet.gif").getScaledInstance(5, 5, Image.SCALE_FAST);
 	
 	public Player player;
 	protected double refrigerator_vel=0.00001;
@@ -34,10 +39,15 @@ public class WryStage extends Stage {
 		//hang rolling
 		addPattern(new HangPattern(this));
 		//hang fragments
-		addPattern(new Fragments(this));
+		addPattern(new FragmentPattern(this));
+		//hang contents
+		addPattern(new HangContent(this));
 		
 		//tornado
 		addPattern(new TornadoPattern(this));
+		
+		//caffein!!
+		//addPattern(new )
 		
 		//fridge falling
 		addPattern(new FridgePattern(this));		
