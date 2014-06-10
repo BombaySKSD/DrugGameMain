@@ -126,7 +126,7 @@ public class ManagingGradeStage extends Stage {
 	}
 
 	@Override
-	public void play() {System.out.println("ddf");
+	public void play() {
 		updateAllPatterns();
 	}
 	@Override
