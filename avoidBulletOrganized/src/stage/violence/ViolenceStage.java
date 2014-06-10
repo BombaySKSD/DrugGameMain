@@ -1,7 +1,10 @@
 package stage.violence;
 
+import java.awt.AlphaComposite;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.ImageObserver;
 import java.util.*;
 
 import main.Play;
@@ -19,7 +22,7 @@ public class ViolenceStage extends Stage {
 	int sit_case=-1;
 	int erupt_position=400;
 	boolean bullet_hit=false;
-	int bullet_damage=2;
+	int bullet_damage=1;
 
 	private Image
 	player_img = getImage("player.gif"),
@@ -28,12 +31,15 @@ public class ViolenceStage extends Stage {
 	background_img = getImage("background1.png"),
 	warning = getImage("picture_violence/warning.gif").getScaledInstance(70,35,Image.SCALE_FAST),
 	eruption = getImage("picture_violence/eruption.gif").getScaledInstance(70,800,Image.SCALE_FAST),
-	bullet = getImage("picture_violence/bullet.gif");
+	bullet = getImage("picture_violence/bullet.gif"),
+	night = getImage("picture_violence/night.gif").getScaledInstance(800,511,Image.SCALE_FAST),
+	torch_mode = getImage("picture_violence/torch_mode.gif").getScaledInstance(1600,1000,Image.SCALE_FAST);
 
 	@Override
 	public void init() {
 		player = new Player(getWidth() / 2, getHeight() - 100, 0, 0, player_img, ViolenceStage.this);
 		player.velocity=4.0;
+		//g2.setComposite(alpha);
 
 		Random situation = new Random();
 		situation.setSeed(System.currentTimeMillis());
@@ -75,7 +81,7 @@ public class ViolenceStage extends Stage {
 			}
 			@Override
 			public boolean createWhen() {
-				if (second()==4) {
+				if (second()==10) {
 					switch (sit_case) {
 					case 0: // left/right arrowkey switched
 						player.velocity=-4.0;
@@ -108,58 +114,6 @@ public class ViolenceStage extends Stage {
 			@Override
 			public boolean inRange(SingleObject bl) {
 				return false;
-			}
-		});
-		/**
-		 * pattern of warning
-		 */
-		addPattern(new Pattern() {
-			Random rand = new Random();
-			@Override
-			public SingleObject create() {
-				return new SingleObject(erupt_position,500,0.0,0,warning);
-			}
-			@Override
-			public boolean createWhen() {
-				if (count%600==0)
-					erupt_position=rand.nextInt(780)+10;
-				return count%600==0;
-			}
-			@Override
-			public boolean removeWhen(SingleObject bl) {
-				return count%600==300;
-			}
-			@Override
-			public void whenCrash() {
-			}
-			@Override
-			public boolean inRange(SingleObject bl) {
-				return bl.inRange(player);
-			}
-		});
-		/**
-		 * pattern of eruption
-		 */
-		addPattern(new Pattern() {
-			@Override
-			public SingleObject create() {
-				return new SingleObject(erupt_position,-100,0.0,0,eruption);
-			}
-			@Override
-			public boolean createWhen() {
-				return count%600==300;
-			}
-			@Override
-			public boolean removeWhen(SingleObject bl) {
-				return count%600==450;
-			}
-			@Override
-			public void whenCrash() {
-				gauge-=0.1;
-			}
-			@Override
-			public boolean inRange(SingleObject bl) {
-				return bl.inRange(player);
 			}
 		});
 		/**
@@ -241,7 +195,59 @@ public class ViolenceStage extends Stage {
 				return bl.inRange(player);
 			}
 		});
-
+		/**
+		 * pattern of warning
+		 */
+		addPattern(new Pattern() {
+			Random rand = new Random();
+			@Override
+			public SingleObject create() {
+				return new SingleObject(erupt_position,500,0.0,0,warning);
+			}
+			@Override
+			public boolean createWhen() {
+				if (count%600==0)
+					erupt_position=rand.nextInt(830)-55;
+				return count%600==0;
+			}
+			@Override
+			public boolean removeWhen(SingleObject bl) {
+				return count%600==300;
+			}
+			@Override
+			public void whenCrash() {
+			}
+			@Override
+			public boolean inRange(SingleObject bl) {
+				return bl.inRange(player);
+			}
+		});
+		/**
+		 * pattern of eruption
+		 */
+		addPattern(new Pattern() {
+			@Override
+			public SingleObject create() {
+				return new SingleObject(erupt_position,-100,0.0,0,eruption);
+			}
+			@Override
+			public boolean createWhen() {
+				return count%600==300;
+			}
+			@Override
+			public boolean removeWhen(SingleObject bl) {
+				return count%600==450;
+			}
+			@Override
+			public void whenCrash() {
+				gauge-=0.1;
+			}
+			@Override
+			public boolean inRange(SingleObject bl) {
+				return bl.inRange(player);
+			}
+		});
+		
 	}
 
 	@Override
@@ -254,27 +260,30 @@ public class ViolenceStage extends Stage {
 	public void draw() {
 		drawImage(background_img, 0, 0);
 		drawAllPatterns();
-		drawImage(ground_img, 0, getHeight()-90);
-		
-		setFont(new Font("Default", Font.BOLD, 20));
-		drawString("TIME : " + String.format("%.0f",second()), getWidth()/2-200, getHeight()/2+240);
-		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
 		if (second()>=4) {
 			switch(sit_case) {
 			case 0:
-				drawString("LEFT? RIGHT?", getWidth()/2-200, getHeight()/2+280);
+				//drawString("LEFT? RIGHT?", getWidth()/2-200, getHeight()/2+280);
+				if (count%300>=100) drawImage(night, 0, 0);
 				break;
 			case 1:
-				drawString("SPEEDSTER!", getWidth()/2-200, getHeight()/2+280);
+				//drawString("SPEEDSTER!", getWidth()/2-200, getHeight()/2+280);
+				drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
 				break;
 			case 2:
-				drawString("TERRIBLE TURTLE!", getWidth()/2-200, getHeight()/2+280);
+				//drawString("TERRIBLE TURTLE!", getWidth()/2-200, getHeight()/2+280);
+				drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
 				break;
 			default:
 				drawString("LUCKY!", getWidth()/2-200, getHeight()/2+280);
 				break;
 			}
 		}
+
+		drawImage(ground_img, 0, getHeight()-90);
+		setFont(new Font("Default", Font.BOLD, 20));
+		drawString("TIME : " + String.format("%.0f",second()), getWidth()/2-200, getHeight()/2+240);
+		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
 	}
 
 	@Override
