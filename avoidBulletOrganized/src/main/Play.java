@@ -29,12 +29,15 @@ final public class Play extends JFrame implements KeyListener{
 	
 	private Image buffImage; // 더블버퍼링을위한버퍼
 	private Random rand;
+
+	Image anotherImage;
+	boolean another=false,first=true;
 	
 	@SuppressWarnings("rawtypes")
 	/**
 	 * Stage 배열
 	 */
-	private Class[] stages={/*ManagingGradeStage.class,AlcoholStage.class,*/ViolenceStage.class};//실행될 Stages 리스트
+	private Class[] stages={/*ManagingGradeStage.class,AlcoholStage.class,ViolenceStage.class*/WryStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
@@ -93,18 +96,39 @@ final public class Play extends JFrame implements KeyListener{
 			gauge=stage.gauge;
 		}
 	}
-	
-	
+	/*class DoubleBufferThread extends Thread{
+		boolean draw=false;
+		@Override
+		public void run() {
+			super.run();
+			while(true){
+				if(draw){
+					draw=false;
+					stage.draw();
+				}
+			}
+		}
+	}*/
 	public void paint(Graphics g) {
 		try{
+			/*if(first){
+				first=false;
+				t=new DoubleBufferThread();
+				t.start();
+				buffImage = createImage(f_width, f_height);
+				stage.setBuffer((Graphics2D)buffImage.getGraphics());
+			}else{
+				g.drawImage(anotherImage, 0, 0, this);
+				anotherImage=buffImage;
+				buffImage = createImage(f_width, f_height);
+				stage.setBuffer((Graphics2D)buffImage.getGraphics());
+				t.draw=true;
+			}*/
 			buffImage = createImage(f_width, f_height);
 			stage.setBuffer((Graphics2D)buffImage.getGraphics());
-			update(g);
+			stage.draw();
+			g.drawImage(buffImage, 0, 0, this);
 		}catch(NullPointerException e){}
-	}
-	public void update(Graphics g) {
-		stage.draw();
-		g.drawImage(buffImage, 0, 0, this);
 	}
 	
 	public void keyPressed(KeyEvent e) {
