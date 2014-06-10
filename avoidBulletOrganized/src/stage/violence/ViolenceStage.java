@@ -30,14 +30,17 @@ public class ViolenceStage extends Stage {
 	player_invisible = getImage("picture_violence/player_invisible.gif"),
 	ground_img = getImage("ground_moon.png").getScaledInstance(800,100,Image.SCALE_FAST),
 	background_img = getImage("background_moon.png").getScaledInstance(800,600,Image.SCALE_FAST),
-	warning = getImage("picture_violence/warning.gif").getScaledInstance(70,35,Image.SCALE_FAST),
-	eruption = getImage("picture_violence/eruption.gif").getScaledInstance(70,800,Image.SCALE_FAST),
+	warning = getImage("picture_violence/magic_field.gif").getScaledInstance(70,25,Image.SCALE_FAST),
+	lightning1 = getImage("picture_violence/lightning.gif").getScaledInstance(70,630,Image.SCALE_FAST),
+	lightning2 = getImage("picture_violence/lightning2.gif").getScaledInstance(70,630,Image.SCALE_FAST),
 	bullet = getImage("picture_violence/stardust1.png").getScaledInstance(10,40,Image.SCALE_FAST),
 	
 	sit1 = getImage("picture_violence/night.gif").getScaledInstance(800,511,Image.SCALE_FAST),
 	sit2 = getImage("picture_violence/torch_mode.gif").getScaledInstance(1600,1000,Image.SCALE_FAST),
 	sit3 = getImage("picture_violence/dark-curtain.gif").getScaledInstance(800,600,Image.SCALE_FAST),
 	
+	switch_on = getImage("picture_violence/switch_on.gif").getScaledInstance(60,150,Image.SCALE_FAST),
+	switch_off = getImage("picture_violence/switch_off.gif").getScaledInstance(60,150,Image.SCALE_FAST),
 	
 	fury1 = getImage("picture_violence/fury.gif").getScaledInstance(25,40,Image.SCALE_FAST),
 	fury2 = getImage("picture_violence/fury2.gif").getScaledInstance(25,40,Image.SCALE_FAST),
@@ -215,7 +218,7 @@ public class ViolenceStage extends Stage {
 			Random rand = new Random();
 			@Override
 			public SingleObject create() {
-				return new SingleObject(erupt_position,500,0.0,0,warning);
+				return new SingleObject(erupt_position,485,0.0,0,warning);
 			}
 			@Override
 			public boolean createWhen() {
@@ -241,15 +244,18 @@ public class ViolenceStage extends Stage {
 		addPattern(new Pattern() {
 			@Override
 			public SingleObject create() {
-				return new SingleObject(erupt_position,-100,0.0,0,eruption);
+				if (count%10<=4)
+					return new SingleObject(erupt_position,-100,0.0,0,lightning1);
+				else
+					return new SingleObject(erupt_position,-100,0.0,0,lightning2);
 			}
 			@Override
 			public boolean createWhen() {
-				return count%600==300;
+				return (count%600>=300 && count%600<450 && count%9==0);
 			}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
-				return count%600==450;
+				return count%9==8;
 			}
 			@Override
 			public void whenCrash() {
@@ -306,6 +312,10 @@ public class ViolenceStage extends Stage {
 				break;
 			}
 		}
+		
+		if (second()<4) drawImage(switch_on, 1050-(int)(second()*100), 100);
+		if (second()>=4 && second()<5) drawImage(switch_on, 650, 100);
+		if (second()>=5 && second()<6) drawImage(switch_off, 650, 100);
 
 		drawImage(ground_img, 0, getHeight()-90);
 		setFont(new Font("Default", Font.BOLD, 20));
