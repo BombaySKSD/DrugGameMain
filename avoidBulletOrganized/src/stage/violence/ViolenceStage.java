@@ -27,11 +27,11 @@ public class ViolenceStage extends Stage {
 	private Image
 	player_img = getImage("player.gif"),
 	player_invisible = getImage("picture_violence/player_invisible.gif"),
-	ground_img = getImage("ground.gif"),
-	background_img = getImage("background1.png"),
+	ground_img = getImage("ground_moon.png").getScaledInstance(800,100,Image.SCALE_FAST),
+	background_img = getImage("background_moon.png").getScaledInstance(800,600,Image.SCALE_FAST),
 	warning = getImage("picture_violence/warning.gif").getScaledInstance(70,35,Image.SCALE_FAST),
 	eruption = getImage("picture_violence/eruption.gif").getScaledInstance(70,800,Image.SCALE_FAST),
-	bullet = getImage("picture_violence/bullet.gif"),
+	bullet = getImage("picture_violence/stardust1.png").getScaledInstance(10,40,Image.SCALE_FAST),
 	night = getImage("picture_violence/night.gif").getScaledInstance(800,511,Image.SCALE_FAST),
 	torch_mode = getImage("picture_violence/torch_mode.gif").getScaledInstance(1600,1000,Image.SCALE_FAST);
 
@@ -43,7 +43,7 @@ public class ViolenceStage extends Stage {
 
 		Random situation = new Random();
 		situation.setSeed(System.currentTimeMillis());
-		sit_case = situation.nextInt(3);
+		sit_case = situation.nextInt(2);
 		
 		/**
 		 *  pattern of player
@@ -81,16 +81,17 @@ public class ViolenceStage extends Stage {
 			}
 			@Override
 			public boolean createWhen() {
+				/*
 				if (second()==10) {
 					switch (sit_case) {
 					case 0: // left/right arrowkey switched
-						player.velocity=-4.0;
+						//player.velocity=-4.0;
 						break;
 					case 1: // terribly fast
-						player.velocity=12.0;
+						//player.velocity=12.0;
 						break;
 					case 2: // terribly slow
-						player.velocity=0.8;
+						//player.velocity=0.8;
 						break;
 					case 3: // character be invisible
 						break;
@@ -101,6 +102,7 @@ public class ViolenceStage extends Stage {
 						break;
 					}
 				}
+				*/
 				return false;
 			}
 			@Override
@@ -149,7 +151,7 @@ public class ViolenceStage extends Stage {
 		addPattern(new Pattern() {
 			@Override
 			public SingleObject create() {
-				return new SingleObject(25+(count%700)*50,(count%700)*0.5,0,0.5,bullet);
+				return new SingleObject(25+(count%700)*50,(count%700)*0.5,0.1*(count%2*2-1),0.5,bullet);
 			}
 			@Override
 			public boolean createWhen() {
@@ -263,16 +265,15 @@ public class ViolenceStage extends Stage {
 		if (second()>=4) {
 			switch(sit_case) {
 			case 0:
-				//drawString("LEFT? RIGHT?", getWidth()/2-200, getHeight()/2+280);
-				if (count%300>=100) drawImage(night, 0, 0);
+				//if (count%300>=100) drawImage(night, 0, 0);
 				break;
 			case 1:
-				//drawString("SPEEDSTER!", getWidth()/2-200, getHeight()/2+280);
-				drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
+				//drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
+				//if (count%300>=100) drawImage(night, 0, 0);
 				break;
 			case 2:
-				//drawString("TERRIBLE TURTLE!", getWidth()/2-200, getHeight()/2+280);
-				drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
+				//drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
+				if (count%300>=100) drawImage(night, 0, 0);
 				break;
 			default:
 				drawString("LUCKY!", getWidth()/2-200, getHeight()/2+280);

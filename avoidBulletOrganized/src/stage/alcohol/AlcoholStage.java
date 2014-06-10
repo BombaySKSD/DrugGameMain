@@ -29,9 +29,9 @@ public class AlcoholStage extends Stage {
 	
 	private Image
 	player_img = getImage("player.gif"),
-	ground_img = getImage("ground.gif"),
 	explosion_img = getImage("explosion.gif"),
-	background_img = getImage("background1.png"),
+	ground_img = getImage("ground_moon.png").getScaledInstance(800,100,Image.SCALE_FAST),
+	background_img = getImage("background_moon.png").getScaledInstance(800,600,Image.SCALE_FAST),
 	soju=getImage("soju.gif").getScaledInstance(15,40,Image.SCALE_FAST),
 	dawn808=getImage("dawn808.gif").getScaledInstance(15,40,Image.SCALE_FAST),
 	pocari=getImage("pocari.gif").getScaledInstance(15,40,Image.SCALE_FAST);
