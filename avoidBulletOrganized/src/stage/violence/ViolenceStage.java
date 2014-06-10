@@ -260,7 +260,6 @@ public class ViolenceStage extends Stage {
 				return bl.inRange(player);
 			}
 		});
-		
 		getSound("audio/violence_music.wav").play();
 	}
 

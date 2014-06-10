@@ -13,6 +13,7 @@ class GradePattern extends Pattern{
 	double frequency=500;
 	private ManagingGradeStage stage;
 	private char grade;
+	private int cnt=0;
 	
 	public GradePattern(char grade,Image image,Image explosion,
 			int startTime,double frequency,
@@ -32,19 +33,30 @@ class GradePattern extends Pattern{
 		Random rand=new Random();
 		double num=rand.nextDouble();
 		int pos=rand.nextInt(stage.getWidth());
+		if(cnt%2==0 && grade=='f'){
+			stage.getSound("audio/missile_fly.wav").play();
+		}
+		if(grade=='f'){
+			cnt++;
+		}
 		return new SingleObject(pos, 0, (Math.PI/4.0)*(num-0.5), frequency/stage.fps/2.0,image);
 	}
 	public boolean createWhen(){
 		if(grade=='c' || grade=='b')
 			return stage.count%(50*stage.fps/frequency+1)==0 && stage.second()>=startTime;
 		else
-			return stage.count%(300*stage.fps/frequency+1)==0 && stage.second()>=startTime;
+			return stage.count%(300*stage.fps/frequency+1)==0 && stage.second()>=0;//startTime;
 				
 	}
 	public boolean removeWhen(SingleObject bl){
-		return bl.inRange(stage.player)
+		boolean remove=bl.inRange(stage.player)
 				|| !bl.inArea(-20,stage.getWidth()+20,0,stage.getHeight())
 				|| stage.second()>17;
+		if(remove){
+			stage.getSound("audio/f_explode.wav").play();
+			
+		}
+		return remove;
 	}
 	public void whenCrash(){
 		stage.gauge-=gaugeDamage;

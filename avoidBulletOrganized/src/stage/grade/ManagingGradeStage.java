@@ -9,16 +9,16 @@ import object.Stage;
 
 
 public class ManagingGradeStage extends Stage {
-	private final static int span=20;
+	private final static int span=23;
 	private double bHeal,cDamage,fDamage,fGaugeDamage,penalty;
 	private Image 
 	player_img = getImage("player.gif"),
 	ground_img = getImage("ground.gif"),
-	b = getImage("rainB.gif").getScaledInstance(40,40,Image.SCALE_FAST),
-	c=getImage("seedC.gif").getScaledInstance(40,40,Image.SCALE_FAST),
-	f=getImage("missileF.gif").getScaledInstance(60,90,Image.SCALE_FAST),
+	b = getImage("realB.gif").getScaledInstance(20,40,Image.SCALE_FAST),
+	c=getImage("realC.gif").getScaledInstance(30,40,Image.SCALE_FAST),
+	f=getImage("realF.gif").getScaledInstance(50,90,Image.SCALE_FAST),
 	explosion_img = getImage("explosion.gif"),
-	background_img = getImage("background1.png"),
+	background_img = getImage("spring_dido.png").getScaledInstance(800, 600, Image.SCALE_FAST),
 	success=getImage("success.gif"),
 	fail=getImage("fail.gif");
 	
@@ -102,7 +102,7 @@ public class ManagingGradeStage extends Stage {
 			}
 			@Override
 			public boolean createWhen() {
-				return second()>=17;
+				return second()>=16 && second()<=23;
 			}
 			@Override
 			public SingleObject create() {
@@ -126,7 +126,7 @@ public class ManagingGradeStage extends Stage {
 	}
 
 	@Override
-	public void play() {System.out.println("ddf");
+	public void play() {
 		updateAllPatterns();
 	}
 	@Override
@@ -143,6 +143,11 @@ public class ManagingGradeStage extends Stage {
 	}
 	@Override
 	public boolean continuing() {
+		if(ManagingGradeStage.this.grade<3.3){
+			if(second()>23){
+				return false;
+			}
+		}
 		if(gauge<=0){
 			stageFailed=true;
 			return false;
