@@ -75,4 +75,5 @@ class GradePattern extends Pattern{
    public boolean inRange(SingleObject bl){
       return bl.inRange(stage.player);
    }
+
 }
