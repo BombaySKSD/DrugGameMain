@@ -18,11 +18,12 @@ public class ViolenceStage extends Stage {
 	private final static int span = 20;
 	public Player player;
 	
-	boolean screen_turned=false;
 	int sit_case=-1;
+	int fury_case=-1;
 	int erupt_position=400;
 	boolean bullet_hit=false;
 	int bullet_damage=1;
+	boolean furied=false;
 
 	private Image
 	player_img = getImage("player.gif"),
@@ -32,18 +33,34 @@ public class ViolenceStage extends Stage {
 	warning = getImage("picture_violence/warning.gif").getScaledInstance(70,35,Image.SCALE_FAST),
 	eruption = getImage("picture_violence/eruption.gif").getScaledInstance(70,800,Image.SCALE_FAST),
 	bullet = getImage("picture_violence/stardust1.png").getScaledInstance(10,40,Image.SCALE_FAST),
-	night = getImage("picture_violence/night.gif").getScaledInstance(800,511,Image.SCALE_FAST),
-	torch_mode = getImage("picture_violence/torch_mode.gif").getScaledInstance(1600,1000,Image.SCALE_FAST);
-
+	
+	sit1 = getImage("picture_violence/night.gif").getScaledInstance(800,511,Image.SCALE_FAST),
+	sit2 = getImage("picture_violence/torch_mode.gif").getScaledInstance(1600,1000,Image.SCALE_FAST),
+	sit3 = getImage("picture_violence/dark-curtain.gif").getScaledInstance(800,600,Image.SCALE_FAST),
+	
+	
+	fury1 = getImage("picture_violence/fury.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	fury2 = getImage("picture_violence/fury2.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	fury3 = getImage("picture_violence/fury3.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	fury4 = getImage("picture_violence/fury4.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	
+	fear1 = getImage("picture_violence/fear1.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	fear2 = getImage("picture_violence/fear2.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	
+	confusion1 = getImage("picture_violence/confusion1.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	confusion2 = getImage("picture_violence/confusion2.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	confusion3 = getImage("picture_violence/confusion3.gif").getScaledInstance(25,40,Image.SCALE_FAST),
+	confusion4 = getImage("picture_violence/confusion4.gif").getScaledInstance(25,40,Image.SCALE_FAST);
+	
 	@Override
 	public void init() {
 		player = new Player(getWidth() / 2, getHeight() - 100, 0, 0, player_img, ViolenceStage.this);
 		player.velocity=4.0;
-		//g2.setComposite(alpha);
 
 		Random situation = new Random();
 		situation.setSeed(System.currentTimeMillis());
-		sit_case = situation.nextInt(2);
+		sit_case = situation.nextInt(3);
+		fury_case = situation.nextInt(3);
 		
 		/**
 		 *  pattern of player
@@ -81,28 +98,22 @@ public class ViolenceStage extends Stage {
 			}
 			@Override
 			public boolean createWhen() {
-				/*
-				if (second()==10) {
-					switch (sit_case) {
-					case 0: // left/right arrowkey switched
-						//player.velocity=-4.0;
+				if ((int)second()==7 && !furied) {
+					switch (fury_case) {
+					case 0:  //left/right arrow key switched
+						player.velocity=-4.0;
 						break;
-					case 1: // terribly fast
-						//player.velocity=12.0;
+					case 1:  //terribly fast
+						player.velocity=12.0;
 						break;
-					case 2: // terribly slow
-						//player.velocity=0.8;
-						break;
-					case 3: // character be invisible
-						break;
-					case 4: // screen turned 180 degree
-						screen_turned=true;
-						break;
-					default:
-						break;
+		            case 2:  //terribly slow
+		            	player.velocity=0.8;
+		            	break;
+		            default:
+		                break;
 					}
-				}
-				*/
+		               furied=true;
+		        }
 				return false;
 			}
 			@Override
@@ -148,7 +159,7 @@ public class ViolenceStage extends Stage {
 		/**
 		 * pattern of bullet curtain
 		 */
-		addPattern(new Pattern() {
+		/*addPattern(new Pattern() {
 			@Override
 			public SingleObject create() {
 				return new SingleObject(25+(count%700)*50,(count%700)*0.5,0.1*(count%2*2-1),0.5,bullet);
@@ -170,7 +181,7 @@ public class ViolenceStage extends Stage {
 			public boolean inRange(SingleObject bl) {
 				return bl.inRange(player);
 			}
-		});
+		});*/
 		/**
 		 * pattern of sniping bullet
 		 */
@@ -250,6 +261,7 @@ public class ViolenceStage extends Stage {
 			}
 		});
 		
+		getSound("audio/violence_music.wav").play();
 	}
 
 	@Override
@@ -261,19 +273,34 @@ public class ViolenceStage extends Stage {
 	@Override
 	public void draw() {
 		drawImage(background_img, 0, 0);
+		if (second()>=7 && fury_case==0) {
+			if (count%12<=2) drawImage(confusion1, (int)player.x-7, (int)player.y-22);
+			else if (count%12<=5) drawImage(confusion2, (int)player.x-7, (int)player.y-22);
+			else if (count%12<=8) drawImage(confusion3, (int)player.x-7, (int)player.y-22);
+			else drawImage(confusion4, (int)player.x-7, (int)player.y-22);
+		}
+		if (second()>=7 && fury_case==1) {
+			if (count%12<=2) drawImage(fury1, (int)player.x-7, (int)player.y-22);
+			else if (count%12<=5) drawImage(fury3, (int)player.x-7, (int)player.y-22);
+			else if (count%12<=8) drawImage(fury2, (int)player.x-7, (int)player.y-22);
+			else drawImage(fury4, (int)player.x-7, (int)player.y-22);
+		}
+		if (second()>=7 && fury_case==2) {
+			if (count%12<=5) drawImage(fear1, (int)player.x-7, (int)player.y-22);
+			else drawImage(fear2, (int)player.x-7, (int)player.y-22);
+		}
+		
 		drawAllPatterns();
-		if (second()>=4) {
+		if (second()>=5) {
 			switch(sit_case) {
 			case 0:
-				//if (count%300>=100) drawImage(night, 0, 0);
+				if (count%300>=100) drawImage(sit1, 0, 0);
 				break;
 			case 1:
-				//drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
-				//if (count%300>=100) drawImage(night, 0, 0);
+				drawImage(sit2, (int)player.x-795, (int)player.y-555);
 				break;
 			case 2:
-				//drawImage(torch_mode, (int)player.x-795, (int)player.y-555);
-				if (count%300>=100) drawImage(night, 0, 0);
+				drawImage(sit3, 0, count%150);
 				break;
 			default:
 				drawString("LUCKY!", getWidth()/2-200, getHeight()/2+280);
@@ -285,6 +312,36 @@ public class ViolenceStage extends Stage {
 		setFont(new Font("Default", Font.BOLD, 20));
 		drawString("TIME : " + String.format("%.0f",second()), getWidth()/2-200, getHeight()/2+240);
 		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
+		if (second()>=5 && second()<7) {
+			switch(sit_case) {
+			case 0:
+				drawString("컴퓨터 전원 이상 (깜빡깜빡)", getWidth()/2-200, getHeight()/2+280);
+				break;
+			case 1:
+				drawString("컴퓨터 전원 이상 (시야 감소)", getWidth()/2-200, getHeight()/2+280);
+				break;
+			case 2:
+				drawString("컴퓨터 전원 이상 (커튼)", getWidth()/2-200, getHeight()/2+280);
+				break;
+			default:
+				break;
+			}
+		}
+		if (second()>=7) {
+			switch(fury_case) {
+			case 0:
+				drawString("상태 : 혼란 (좌우 키 반전)", getWidth()/2-200, getHeight()/2+280);
+				break;
+			case 1:
+				drawString("상태 : 분노 (속도 증가)", getWidth()/2-200, getHeight()/2+280);
+				break;
+			case 2:
+				drawString("상태 : 공포 (속도 감소)", getWidth()/2-200, getHeight()/2+280);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
