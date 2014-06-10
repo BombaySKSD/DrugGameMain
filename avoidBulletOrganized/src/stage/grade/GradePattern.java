@@ -45,16 +45,18 @@ class GradePattern extends Pattern{
 		if(grade=='c' || grade=='b')
 			return stage.count%(50*stage.fps/frequency+1)==0 && stage.second()>=startTime;
 		else
-			return stage.count%(300*stage.fps/frequency+1)==0 && stage.second()>=0;//startTime;
+			return stage.count%(300*stage.fps/frequency+1)==0 && stage.second()<=16 && stage.second()>=0;//startTime;
 				
 	}
 	public boolean removeWhen(SingleObject bl){
 		boolean remove=bl.inRange(stage.player)
-				|| !bl.inArea(-20,stage.getWidth()+20,0,stage.getHeight())
+				|| !bl.inArea(-20,stage.getWidth()+20,-50,stage.getHeight()-100)
 				|| stage.second()>17;
-		if(remove){
+		if(remove && grade=='f'){
 			stage.getSound("audio/f_explode.wav").play();
-			
+			stage.impact=true;
+			stage.impactx=(int)bl.x;
+			stage.impacty=(int)bl.y;
 		}
 		return remove;
 	}
@@ -64,6 +66,11 @@ class GradePattern extends Pattern{
 		if (stage.grade>4.5) stage.grade=4.5;
 		if (stage.grade<0.0) stage.grade=0.0;
 		stage.hit=true;
+		if(grade=='f'){
+			stage.impact=true;
+			stage.impactx=(int)stage.player.x;
+			stage.impacty=(int)stage.player.y;
+		}
 	}
 	public boolean inRange(SingleObject bl){
 		return bl.inRange(stage.player);

@@ -20,11 +20,13 @@ public class ManagingGradeStage extends Stage {
 	explosion_img = getImage("explosion.gif"),
 	background_img = getImage("spring_dido.png").getScaledInstance(800, 600, Image.SCALE_FAST),
 	success=getImage("success.gif"),
-	fail=getImage("fail.gif");
+	fail=getImage("fail.gif"),
+	big_explosion=getImage("picture_violence/fury.gif").getScaledInstance(80, 90, Image.SCALE_FAST);
 	
 	public double grade;
 	public Player player;
-	public boolean hit=false;
+	public boolean hit=false,impact=false;
+	public int impactx,impacty;
 	
 	@Override
 	public void init() {
@@ -85,6 +87,29 @@ public class ManagingGradeStage extends Stage {
 			public SingleObject create() {
 				hit=false;
 				return new MultiFrameObject(player.x-30, player.y-30, explosion_img, 100);
+			}
+		});
+		
+		addPattern(new Pattern() {
+			@Override
+			public boolean inRange(SingleObject bl) {
+				return false;
+			}
+			@Override
+			public void whenCrash() {}
+			@Override
+			public boolean removeWhen(SingleObject bl) {
+				return ((MultiFrameObject)bl).shouldRemove();
+			}
+			@Override
+			public boolean createWhen() {
+				return impact;
+			}
+			@Override
+			public SingleObject create() {
+				impact=false;
+				System.out.println("dfdf");
+				return new MultiFrameObject(impactx-20, impacty-70, big_explosion, 100);
 			}
 		});
 		// pattern of success/fail
