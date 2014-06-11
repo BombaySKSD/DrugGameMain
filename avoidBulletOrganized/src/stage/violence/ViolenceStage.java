@@ -110,7 +110,7 @@ public class ViolenceStage extends Stage {
 						player.velocity=12.0;
 						break;
 		            case 2:  //terribly slow
-		            	player.velocity=0.8;
+		            	player.velocity=1.0;
 		            	break;
 		            default:
 		                break;

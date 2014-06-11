@@ -10,20 +10,21 @@ import object.Sound;
 import object.Stage;
 
 public class ManagingGradeStage extends Stage {
-   private final static int span = 26;
+   private final static int span = 20;
    private double bHeal, cDamage, fDamage, fGaugeDamage, penalty;
-   private Image player_img = getImage("player.gif"),
-         ground_img = getImage("ground.gif"), b = getImage("realB.gif")
-               .getScaledInstance(20, 40, Image.SCALE_FAST), c = getImage(
-               "realC.gif").getScaledInstance(30, 40, Image.SCALE_FAST),
-         f = getImage("realF.gif").getScaledInstance(50, 90,
-               Image.SCALE_FAST),
-         explosion_img = getImage("explosion.gif"),
-         background_img = getImage("spring_dido.png").getScaledInstance(800,
-               600, Image.SCALE_FAST), success = getImage("success.gif"),
-         fail = getImage("fail.gif"), big_explosion = getImage(
-               "picture_violence/fury.gif").getScaledInstance(80, 90,
-               Image.SCALE_FAST);
+   
+   private Image
+   player_img = getImage("player.gif"),
+   ground_img = getImage("ground_moon.png").getScaledInstance(800,100,Image.SCALE_FAST),
+   b = getImage("realB.gif").getScaledInstance(20, 40, Image.SCALE_FAST),
+   c = getImage("realC.gif").getScaledInstance(30, 40, Image.SCALE_FAST),
+   f = getImage("realF.gif").getScaledInstance(50, 90, Image.SCALE_FAST),
+   assignment = getImage("assignment.gif").getScaledInstance(20, 40, Image.SCALE_FAST),
+   explosion_img = getImage("explosion.gif"),
+   background_img = getImage("spring_dido.png").getScaledInstance(800,600, Image.SCALE_FAST),
+   success = getImage("success.gif"),
+   fail = getImage("fail.gif"),
+   big_explosion = getImage("picture_violence/fury.gif").getScaledInstance(80, 90,Image.SCALE_FAST);
 
    public double grade;
    public Player player;
@@ -49,7 +50,7 @@ public class ManagingGradeStage extends Stage {
          bHeal = -0.2;
          cDamage = 0.3;
          fDamage = 0.7;
-         fGaugeDamage = 13;
+         fGaugeDamage = 5;
          penalty = 7;
          break;
       case HARD:
@@ -192,7 +193,7 @@ public class ManagingGradeStage extends Stage {
                image = fail;
                if (!evaluated) {
                   evaluated = true;
-                  gauge -= (3.3 - grade) * penalty * 10;
+                  gauge -= (3.3 - grade) * penalty * 1;
                   army=getSound("audio/army2.wav");
                   army.loop();
                }

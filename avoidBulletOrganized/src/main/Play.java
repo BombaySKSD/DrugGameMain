@@ -37,7 +37,7 @@ final public class Play extends JFrame implements KeyListener{
 	/**
 	 * Stage 배열
 	 */
-	private Class[] stages={ManagingGradeStage.class/*,AlcoholStage.class,ViolenceStage.class*/};//실행될 Stages 리스트
+	private Class[] stages={ManagingGradeStage.class,ViolenceStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
@@ -68,9 +68,9 @@ final public class Play extends JFrame implements KeyListener{
 
 	public void play() {
 		for(int i=0;i<stages.length*4;i++){
-			int nextNum=rand.nextInt(stages.length);
+			//int nextNum=rand.nextInt(stages.length);
 			try {
-				stage=(Stage)stages[nextNum].newInstance();
+				stage=(Stage)stages[i%2].newInstance();
 			} catch (InstantiationException | IllegalAccessException e1) {
 				e1.printStackTrace();
 				System.exit(1);
