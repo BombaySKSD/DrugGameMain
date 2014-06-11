@@ -12,11 +12,9 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import object.Stage;
-
-import stage.alcohol.AlcoholStage;
 import stage.grade.ManagingGradeStage;
+import stage.start.StartPage;
 import stage.violence.ViolenceStage;
-import stage.wry.WryStage;
 
 @SuppressWarnings("serial")
 final public class Play extends JFrame implements KeyListener{
@@ -32,6 +30,7 @@ final public class Play extends JFrame implements KeyListener{
 
 	Image anotherImage;
 	boolean another=false,first=true;
+	boolean startPress=false;
 	
 	@SuppressWarnings("rawtypes")
 	/**
@@ -67,6 +66,18 @@ final public class Play extends JFrame implements KeyListener{
 	}
 
 	public void play() {
+		stage=new StartPage();
+		stage.setPlay(this);
+		while(startPress==false){
+			long initialTime=System.currentTimeMillis();
+			repaint();
+			try {
+				long delay=1000/fps-(System.currentTimeMillis()-initialTime);
+				if(delay>0){
+					Thread.sleep(delay);
+				}
+			} catch (InterruptedException e) {}
+		}
 		for(int i=0;i<stages.length*4;i++){
 			//int nextNum=rand.nextInt(stages.length);
 			try {
@@ -149,6 +160,7 @@ final public class Play extends JFrame implements KeyListener{
 			stage.keySpace = true;
 			break;
 		}
+		startPress=true;
 	}
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
