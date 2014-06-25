@@ -7,7 +7,6 @@ import object.Pattern;
 import object.SingleObject;
 import object.Stage;
 import stage.grade.Player;
-import stage.violence.ViolenceStage;
 
 public class WryStage extends Stage {
 

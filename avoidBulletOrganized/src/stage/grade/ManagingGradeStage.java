@@ -12,6 +12,7 @@ import object.Stage;
 public class ManagingGradeStage extends Stage {
    private final static int span = 20;
    private double bHeal, cDamage, fDamage, fGaugeDamage, penalty;
+   int f_startTime;
    
    private Image
    player_img = getImage("player.gif"),
@@ -19,9 +20,8 @@ public class ManagingGradeStage extends Stage {
    b = getImage("realB.gif").getScaledInstance(20, 40, Image.SCALE_FAST),
    c = getImage("realC.gif").getScaledInstance(30, 40, Image.SCALE_FAST),
    f = getImage("realF.gif").getScaledInstance(50, 90, Image.SCALE_FAST),
-   assignment = getImage("assignment.gif").getScaledInstance(20, 40, Image.SCALE_FAST),
    explosion_img = getImage("explosion.gif"),
-   background_img = getImage("spring_dido.png").getScaledInstance(800,600, Image.SCALE_FAST),
+   background_img = getImage("background_moon.png").getScaledInstance(800,600, Image.SCALE_FAST),
    success = getImage("success.gif"),
    fail = getImage("fail.gif"),
    big_explosion = getImage("picture_violence/fury.gif").getScaledInstance(80, 90,Image.SCALE_FAST);
@@ -33,33 +33,37 @@ public class ManagingGradeStage extends Stage {
    public boolean ending = false, endingFin = false;
    
    private Sound army;
+   boolean army_played=false;
 
    @Override
    public void init() {
       switch (getDifficulty()) {
       case EASY:
          grade = 2.4;
+         f_startTime=99;
          bHeal = -0.2;
          cDamage = 0.2;
          fDamage = 0.5;
-         fGaugeDamage = 10;
-         penalty = 6;
+         fGaugeDamage = 6;
+         penalty = 5;
          break;
       case MODERATE:
-         grade = 2.0;
+         grade = 2.2;
+         f_startTime=10;
          bHeal = -0.2;
          cDamage = 0.3;
-         fDamage = 0.7;
-         fGaugeDamage = 5;
-         penalty = 7;
+         fDamage = 0.6;
+         fGaugeDamage = 8;
+         penalty = 6;
          break;
       case HARD:
-         grade = 2.2;
-         bHeal = -0.1;
+         grade = 2.0;
+         f_startTime=8;
+         bHeal = -0.2;
          cDamage = 0.4;
-         fDamage = 0.9;
-         fGaugeDamage = 16;
-         penalty = 8;
+         fDamage = 0.7;
+         fGaugeDamage = 10;
+         penalty = 7;
          break;
       }
       player = new Player(getWidth() / 2, getHeight() - 100, 0, 0,
@@ -70,7 +74,7 @@ public class ManagingGradeStage extends Stage {
             this));
       addPattern(new GradePattern('c', c, explosion_img, 5, 1000, cDamage, 0,
             this));
-      addPattern(new GradePattern('f', f, explosion_img, 10, 3000, fDamage,
+      addPattern(new GradePattern('f', f, explosion_img, f_startTime, 3000, fDamage,
             fGaugeDamage, this));
       // pattern player SingleObject
       addPattern(new Pattern() {
@@ -193,9 +197,10 @@ public class ManagingGradeStage extends Stage {
                image = fail;
                if (!evaluated) {
                   evaluated = true;
-                  gauge -= (3.3 - grade) * penalty * 1;
+                  gauge -= (3.3 - grade) * penalty * 5;
                   army=getSound("audio/army2.wav");
                   army.loop();
+                  army_played=true;
                }
             }
             return new SingleObject(getWidth() / 3, getHeight() / 3, 0, 0,
@@ -216,11 +221,22 @@ public class ManagingGradeStage extends Stage {
       drawImage(ground_img, 0, getHeight() - 90);
 
       setFont(new Font("Default", Font.BOLD, 20));
-      drawString("TIME : " + String.format("%.0f", second()),
+      switch(getDifficulty()) {
+		case EASY:
+			drawString("쉬움",100,getHeight()/2+240);
+			break;
+		case MODERATE:
+			drawString("보통",100,getHeight()/2+240);
+			break;
+		case HARD:
+			drawString("어려움",100,getHeight()/2+240);
+			break;
+		}
+      drawString("TIME : " + String.format("%.0f", totalSecond()),
             getWidth() / 2 - 200, getHeight() / 2 + 240);
-      drawString("HIT : " + String.format("%.0f", gauge),
+      drawString("HP : " + String.format("%.0f", gauge),
             getWidth() / 2 - 200, getHeight() / 2 + 260);
-      drawString("GRADE : " + String.format("%.1f", grade),
+      drawString("GRADE : " + String.format("%.1f", grade)+" (목표 : 3.3)",
             getWidth() / 2 - 200, getHeight() / 2 + 280);
 
    }
@@ -230,11 +246,11 @@ public class ManagingGradeStage extends Stage {
       if (gauge <= 0) {
          stageFailed = true;
          ending = true;
-         army.stop();
+         if (army_played) army.stop();
          return false;
       }
       if(gauge>0 && second()>span){
-         army.stop();
+    	 if (army_played) army.stop();
          return false;
       }
       return second() <= span;

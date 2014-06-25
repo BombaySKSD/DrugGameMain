@@ -172,6 +172,9 @@ abstract public class Stage{
 	final public double second(){
 		return (System.currentTimeMillis()-initialTime)/1000.0+1;
 	}
+	final public double totalSecond(){
+		return (System.currentTimeMillis()-play.initialTime)/1000.0+1;
+	}
 	/**
 	 * gif,png 등의 포맷을 가진 이미지를 인수로 넘겨받아 {@link SingleObject} 객체의 생성에 쓸 수 있는 Image 객체를 리턴합니다. 
 	 * @param filepath 이미지 파일의 절대(상대)경로, 같은 폴더 내에 있을 경우 파일 이름(filename.extension).

@@ -1,13 +1,8 @@
 package stage.violence;
 
-import java.awt.AlphaComposite;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
 import java.util.*;
-
-import main.Play;
 
 import object.Pattern;
 import object.SingleObject;
@@ -18,6 +13,7 @@ public class ViolenceStage extends Stage {
 	private final static int span = 20;
 	public Player player;
 	
+	double bullet_speed;
 	int sit_case=-1;
 	int fury_case=-1;
 	int erupt_position=400;
@@ -27,7 +23,6 @@ public class ViolenceStage extends Stage {
 
 	private Image
 	player_img = getImage("player.gif"),
-	player_invisible = getImage("picture_violence/player_invisible.gif"),
 	ground_img = getImage("ground_moon.png").getScaledInstance(800,100,Image.SCALE_FAST),
 	background_img = getImage("background_moon.png").getScaledInstance(800,600,Image.SCALE_FAST),
 	warning = getImage("picture_violence/magic_field.gif").getScaledInstance(70,25,Image.SCALE_FAST),
@@ -59,6 +54,18 @@ public class ViolenceStage extends Stage {
 	public void init() {
 		player = new Player(getWidth() / 2, getHeight() - 100, 0, 0, player_img, ViolenceStage.this);
 		player.velocity=4.0;
+		
+		switch(getDifficulty()) {
+		case EASY:
+			bullet_speed=0.5;
+			break;
+		case MODERATE:
+			bullet_speed=1.0;
+			break;
+		case HARD:
+			bullet_speed=1.1;
+			break;
+		}
 
 		Random situation = new Random();
 		situation.setSeed(System.currentTimeMillis());
@@ -139,11 +146,13 @@ public class ViolenceStage extends Stage {
 			Random rand = new Random();
 			@Override
 			public SingleObject create() {
-				return new SingleObject(rand.nextInt(780)+10,0,(rand.nextDouble()-0.5)*0.5,1.0,bullet);
+				return new SingleObject(rand.nextInt(780)+10,0,(rand.nextDouble()-0.5)*0.5,bullet_speed,bullet);
 			}
 			@Override
 			public boolean createWhen() {
-				return count%60==0;
+				return (count%90==0 && getDifficulty()==EASY)
+						|| (count%60==0 && getDifficulty()==MODERATE)
+						|| (count%60==0 && getDifficulty()==HARD);
 			}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
@@ -162,14 +171,14 @@ public class ViolenceStage extends Stage {
 		/**
 		 * pattern of bullet curtain
 		 */
-		/*addPattern(new Pattern() {
+		addPattern(new Pattern() {
 			@Override
 			public SingleObject create() {
 				return new SingleObject(25+(count%700)*50,(count%700)*0.5,0.1*(count%2*2-1),0.5,bullet);
 			}
 			@Override
 			public boolean createWhen() {
-				return count%700<=15;
+				return count%700<=15 && getDifficulty()==HARD;
 			}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
@@ -184,7 +193,7 @@ public class ViolenceStage extends Stage {
 			public boolean inRange(SingleObject bl) {
 				return bl.inRange(player);
 			}
-		});*/
+		});
 		/**
 		 * pattern of sniping bullet
 		 */
@@ -224,7 +233,9 @@ public class ViolenceStage extends Stage {
 			public boolean createWhen() {
 				if (count%600==0)
 					erupt_position=rand.nextInt(830)-55;
-				return count%600==0;
+				return (count%600==0 && getDifficulty()==EASY)
+						|| (count%600==50 && getDifficulty()==MODERATE)
+						|| (count%600==100 && getDifficulty()==HARD);
 			}
 			@Override
 			public boolean removeWhen(SingleObject bl) {
@@ -299,7 +310,7 @@ public class ViolenceStage extends Stage {
 		if (second()>=5) {
 			switch(sit_case) {
 			case 0:
-				if (count%300>=100) drawImage(sit1, 0, 0);
+				if (count%300>=125) drawImage(sit1, 0, 0);
 				break;
 			case 1:
 				drawImage(sit2, (int)player.x-795, (int)player.y-555);
@@ -319,8 +330,20 @@ public class ViolenceStage extends Stage {
 
 		drawImage(ground_img, 0, getHeight()-90);
 		setFont(new Font("Default", Font.BOLD, 20));
-		drawString("TIME : " + String.format("%.0f",second()), getWidth()/2-200, getHeight()/2+240);
-		drawString("HIT : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
+		
+		switch(getDifficulty()) {
+		case EASY:
+			drawString("쉬움",100,getHeight()/2+240);
+			break;
+		case MODERATE:
+			drawString("보통",100,getHeight()/2+240);
+			break;
+		case HARD:
+			drawString("어려움",100,getHeight()/2+240);
+			break;
+		}
+		drawString("TIME : " + String.format("%.0f",totalSecond()), getWidth()/2-200, getHeight()/2+240);
+		drawString("HP : " + String.format("%.0f",gauge), getWidth()/2-200, getHeight()/2+260);
 		if (second()>=5 && second()<7) {
 			switch(sit_case) {
 			case 0:

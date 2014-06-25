@@ -11,7 +11,7 @@ public class SingleObject {
 	public Image image;
 	public double rpsec;//round per sec
 	
-	public SingleObject(double x, double y, double angle, double speed,Image image) {
+	public SingleObject(double x, double y, double angle, double speed, Image image) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;

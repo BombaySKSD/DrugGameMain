@@ -29,6 +29,7 @@ abstract public class Pattern{
 				i--;
 			}
 		}
+		
 		for(int i=0;i<list.size();i++){
 			SingleObject bl=list.get(i);
 			bl.move();

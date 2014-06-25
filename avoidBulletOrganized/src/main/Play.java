@@ -12,6 +12,8 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import object.Stage;
+import stage.alcohol.AlcoholStage;
+import stage.firetruck.FiretruckStage;
 import stage.grade.ManagingGradeStage;
 import stage.start.StartPage;
 import stage.violence.ViolenceStage;
@@ -25,6 +27,8 @@ final public class Play extends JFrame implements KeyListener{
 	public int f_ypos;
 	public double gauge;
 	
+	int prev_stage=-1;
+	
 	private Image buffImage; // 더블버퍼링을위한버퍼
 	private Random rand;
 
@@ -32,11 +36,15 @@ final public class Play extends JFrame implements KeyListener{
 	boolean another=false,first=true;
 	boolean startPress=false;
 	
+	public double initialTime;
 	@SuppressWarnings("rawtypes")
 	/**
 	 * Stage 배열
 	 */
-	private Class[] stages={ManagingGradeStage.class,ViolenceStage.class};//실행될 Stages 리스트
+	private Class[] stages={ManagingGradeStage.class,
+		ViolenceStage.class,
+		AlcoholStage.class,
+		FiretruckStage.class};//실행될 Stages 리스트
 	private Stage stage;
 	// 변수 생성 끝
 	
@@ -45,7 +53,7 @@ final public class Play extends JFrame implements KeyListener{
 		f_height=600;
 		gauge=100.0;
 		rand=new Random();
-		setTitle("avoidBullet");
+		setTitle("Coconut Talk");
 		setSize(f_width, f_height);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		// 프레임이 윈도우에 표시될때 위치를 세팅하기 위해
@@ -78,16 +86,31 @@ final public class Play extends JFrame implements KeyListener{
 				}
 			} catch (InterruptedException e) {}
 		}
-		for(int i=0;i<stages.length*4;i++){
-			//int nextNum=rand.nextInt(stages.length);
+		initialTime=System.currentTimeMillis();
+		for(int i=0;true;i++){
+			int nextNum;
+			if (prev_stage==-1) nextNum=rand.nextInt(stages.length);
+			else {
+				do nextNum=rand.nextInt(stages.length);
+				while (prev_stage==nextNum);
+			}
+			prev_stage=nextNum;
+			
 			try {
-				stage=(Stage)stages[i%2].newInstance();
+				stage=(Stage)stages[nextNum].newInstance();
 			} catch (InstantiationException | IllegalAccessException e1) {
 				e1.printStackTrace();
 				System.exit(1);
 			}
 			stage.setPlay(this);
-			stage.setDifficulty(Stage.MODERATE);
+			
+			/**
+			 * set difficulty
+			 */
+			if (i<=1) stage.setDifficulty(Stage.EASY);
+			else if (i<=5) stage.setDifficulty(Stage.MODERATE);
+			else stage.setDifficulty(Stage.HARD);
+			
 			stage.init();
 			while(stage.continuing()){
 				long initialTime=System.currentTimeMillis();

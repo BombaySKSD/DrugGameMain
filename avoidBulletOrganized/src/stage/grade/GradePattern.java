@@ -51,7 +51,7 @@ class GradePattern extends Pattern{
    public boolean removeWhen(SingleObject bl){
       boolean remove=bl.inRange(stage.player)
             || !bl.inArea(-20,stage.getWidth()+20,-50,stage.getHeight()-100)
-            || stage.second()>17;
+            || stage.second()>16;
       if(remove && grade=='f'){
          stage.getSound("audio/f_explode.wav").play();
          stage.impact=true;
